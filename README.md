@@ -1,11 +1,10 @@
 # gameplayscripting
 
 ## Features
-- Resource Gathering: Wood, Stone, Food?
-- Build bridges
-- Build turrets## Inspirations
-- Enemies Spawning
-- Trees, Rocks Spawning
-
-## Inspiration
-- Forager
+- Fishing
+- Fish Rarities
+- Shinies
+- Upgrades
+- Animation
+- Skill Check to Catch
+- Buy/Sell in Store
