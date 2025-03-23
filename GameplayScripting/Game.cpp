@@ -17,7 +17,7 @@ Game::~Game( )
 void Game::Initialize( )
 {
 	m_pWaterTexture = new Texture{"Objects/Water.png"};
-	m_pFishingHutTexture = new Texture{"Fishing_hut.png"};
+	m_pFishingHutTexture = new Texture{"Objects/Fishing_hut.png"};
 
 	const Vector2f fisherPosisher{ 135.f, GetViewPort().height / 4 + 10.f };
 	m_pFisherman = new Fisherman{ fisherPosisher };
