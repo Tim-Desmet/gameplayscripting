@@ -52,10 +52,13 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	{
 	case SDLK_e:
 		m_pFisherman->SetState(Fisherman::State::fishing);
-		m_pFisherman->Catch(Vector2f(GetViewPort().width / 2, GetViewPort().height / 2));
+		m_pFisherman->ShowSkillCheck(Vector2f(GetViewPort().width / 2, GetViewPort().height / 2));
 		break;
 	case SDLK_q:
 		m_pFisherman->SetState(Fisherman::State::hook);
+		break;
+	case SDLK_SPACE:
+		m_pFisherman->Catch();
 		break;
 	default:
 		break;

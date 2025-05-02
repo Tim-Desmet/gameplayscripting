@@ -4,7 +4,8 @@
 #include "SkillCheck.h"
 
 Fisherman::Fisherman(const Vector2f& pos)
-	: m_Pos{ pos }, m_State{ State::idle }, m_CurrFrame{ 0 }, m_Cols{ 4 }, m_AnimTime{ 0.f }
+	: m_Pos{ pos }, m_State{ State::idle }, m_CurrFrame{ 0 }, m_Cols{ 4 }, m_AnimTime{ 0.f },
+	m_pSkillCheck{ new SkillCheck(pos, 20.f, 300.f) }
 {
 	InitTextures();
 }
@@ -114,10 +115,16 @@ Fisherman::State Fisherman::GetState() const
 	return m_State;
 }
 
-void Fisherman::Catch(const Vector2f& pos)
+void Fisherman::ShowSkillCheck(const Vector2f& pos)
 {
-	m_pSkillCheck = new SkillCheck(pos, 10.f, 300.f);
+	delete m_pSkillCheck;
+	m_pSkillCheck = new SkillCheck(pos, 20.f, 300.f);
 	m_pSkillCheck->ToggleVisibility();
+}
+
+void Fisherman::Catch()
+{
+	m_pSkillCheck->Stop();
 }
 
 void Fisherman::InitTextures()

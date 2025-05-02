@@ -4,6 +4,7 @@ class SkillCheck
 {
 public:
 	SkillCheck(const Vector2f& pos, float width, float speed);
+	~SkillCheck();
 	void Draw() const;
 	void Update(float elapsedSec);
 	void Stop();
@@ -17,5 +18,7 @@ private:
 	float m_Speed;
 	Rectf m_PlayerRect;
 	Rectf m_BorderRect;
+	
+	void CheckSucces();
 };
 

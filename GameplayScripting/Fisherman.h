@@ -21,7 +21,8 @@ public:
 	void Update(float elapsedSec);
 	void SetState(const State& state);
 	State GetState() const;
-	void Catch(const Vector2f& pos);
+	void ShowSkillCheck(const Vector2f& pos);
+	void Catch();
 
 private:
 	Vector2f m_Pos;

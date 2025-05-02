@@ -1,9 +1,14 @@
 #include "pch.h"
 #include "SkillCheck.h"
 #include <utils.h>
+#include <iostream>
 
 SkillCheck::SkillCheck(const Vector2f& pos, float width, float speed) : m_Width(width), m_Position(pos), m_IsHidden(true), m_Speed{ speed },
 m_IsMoving{ false }, m_BorderRect{ pos.x - 200.f, pos.y, 400.f, 75.f }, m_PlayerRect{ pos.x - 100.f, pos.y, 5.f, 75.f }
+{
+}
+
+SkillCheck::~SkillCheck()
 {
 }
 
@@ -34,11 +39,28 @@ void SkillCheck::Update(float elapsedSec)
 
 void SkillCheck::Stop()
 {
-	m_Speed = 0.f;
-	m_IsHidden = true;
+	if (m_IsHidden == false)
+	{
+		m_Speed = 0.f;
+		CheckSucces();
+		ToggleVisibility();
+	}
 }
 
 void SkillCheck::ToggleVisibility()
 {
 	m_IsHidden = !m_IsHidden;
+}
+
+void SkillCheck::CheckSucces()
+{
+	if (m_PlayerRect.left <= m_Position.x + m_Width && m_PlayerRect.left >= m_Position.x)
+	{
+		// Catch
+		std::cout << "Nice! You got it!";
+	}
+	else {
+		// No Catch
+		std::cout << "Snap! It got away...";
+	}
 }
