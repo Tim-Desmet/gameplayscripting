@@ -36,5 +36,5 @@ private:
 
 	Texture* m_pWaterTexture;
 	Texture* m_pFishingHutTexture;
-	Fisherman* m_pFisherman{};
+	Fisherman* m_pFisherman;
 };

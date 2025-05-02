@@ -1,10 +1,25 @@
 # gameplayscripting
 
-## Features
+- Aesthetics -> Looks, Sound
+- Story -> Sequence of events
+- Mechanics -> Rules, Goal, Actions
+
+## Feature ideas
 - Fishing
 - Fish Rarities
+- Fish Size
 - Shinies
-- Upgrades
 - Animation
-- Skill Check to Catch
-- Buy/Sell in Store
+- Buy/Sell in Store:
+- Junk Selling
+Healing
+Upgrades
+Bait -> Rarer catching
+
+(Need Skill)
+Catching: 
+- Skill check to catch
+- Battle to catch -> HP, Damage, Speed, Lvl?
+- Choose battle or catch -> battle = exp/reward(s), catch = new fish to use for battle (with skill check?)
+- Boss fight after X catches?
+- Missions/Quests

@@ -1,7 +1,9 @@
 #pragma once
 
 class Texture;
-class Fisherman
+class Fish;
+class SkillCheck;
+class Fisherman 
 {
 public:
 	enum class State {
@@ -17,13 +19,21 @@ public:
 
 	void Draw() const;
 	void Update(float elapsedSec);
-	State m_State;
+	void SetState(const State& state);
+	State GetState() const;
+	void Catch(const Vector2f& pos);
 
 private:
 	Vector2f m_Pos;
-	Texture* m_pTexture;
+	State m_State;
 	int m_CurrFrame;
 	int m_Cols;
 	float m_AnimTime;
+	const Texture* m_pIdleTexture;
+	const Texture* m_pHookTexture;
+	const Texture* m_pFishTexture;
+	SkillCheck* m_pSkillCheck;
+
+	void InitTextures();
 };
 

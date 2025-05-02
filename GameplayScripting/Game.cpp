@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Texture.h"
 #include "Fisherman.h"
+#include <utils.h>
 
 Game::Game( const Window& window ) 
 	:BaseGame{ window }
@@ -50,10 +51,11 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	switch (e.keysym.sym)
 	{
 	case SDLK_e:
-		m_pFisherman->m_State = Fisherman::State::fishing;
+		m_pFisherman->SetState(Fisherman::State::fishing);
+		m_pFisherman->Catch(Vector2f(GetViewPort().width / 2, GetViewPort().height / 2));
 		break;
 	case SDLK_q:
-		m_pFisherman->m_State = Fisherman::State::hook;
+		m_pFisherman->SetState(Fisherman::State::hook);
 		break;
 	default:
 		break;
@@ -127,8 +129,8 @@ void Game::ClearBackground( ) const
 void Game::DrawMap() const
 {
 	DrawWater();
-	m_pFishingHutTexture->Draw(
-		Vector2f{ -30.f, GetViewPort().height / 4 }, Rectf{0.f, 0.f, m_pFishingHutTexture->GetWidth(), 2 * m_pFishingHutTexture->GetHeight() / 3 - 8.f});
+	m_pFishingHutTexture->Draw(Vector2f{ -30.f, GetViewPort().height / 4 },
+		Rectf{0.f, 0.f, m_pFishingHutTexture->GetWidth(), 2 * m_pFishingHutTexture->GetHeight() / 3 - 8.f});
 }
 
 void Game::DrawWater() const
