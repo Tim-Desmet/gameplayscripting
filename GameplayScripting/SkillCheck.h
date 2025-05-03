@@ -1,5 +1,6 @@
 #pragma once
 #include <utils.h>
+class Texture;
 class SkillCheck
 {
 public:
@@ -18,6 +19,10 @@ private:
 	float m_Speed;
 	Rectf m_PlayerRect;
 	Rectf m_BorderRect;
+
+	bool m_ShowFeedback;
+	Texture* m_pFeedback;
+	float m_FeedbackTimer;
 	
 	void CheckSucces();
 };
