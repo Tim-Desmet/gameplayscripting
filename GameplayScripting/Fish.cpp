@@ -1,16 +1,64 @@
 #include "pch.h"
 #include "Fish.h"
+#include <iostream>
+#include <cassert>
 
-Fish::Fish() : m_pTexture{ new Texture{"Objects/Catch/1.png"} }
+Fish::Fish() : m_CurrFrame{ 1 }, m_AnimTime{ 0.f }, m_NumFrames{ 2 }, m_FrameTime{ 0.5f },
+m_pTexture{ new Texture{ "Objects/Catch/" + std::to_string(GetWeightedRandomNumber()) + ".png" } }
 {
 }
 
 Fish::~Fish()
 {
 	delete m_pTexture;
+    m_pTexture = nullptr;
 }
 
-void Fish::Draw()
+void Fish::Draw(const Vector2f& pos) const
 {
-	m_pTexture->Draw();
+    float width = m_pTexture->GetWidth() / m_NumFrames;
+    float height = m_pTexture->GetHeight();
+    Rectf srcRect = Rectf{ m_CurrFrame * width, 0.f, width, height };
+	m_pTexture->Draw(pos, srcRect);
+}
+
+void Fish::Update(float elapsedSec)
+{
+    m_AnimTime += elapsedSec;
+
+    if (m_AnimTime >= m_FrameTime)
+    {
+        m_AnimTime -= m_FrameTime;
+        m_CurrFrame = (m_CurrFrame + 1) % m_NumFrames;
+    }
+}
+
+float Fish::GetWidth() const
+{
+    return m_pTexture->GetWidth() / 2;
+}
+
+float Fish::GetHeight() const
+{
+    return m_pTexture->GetHeight();
+}
+
+int Fish::GetWeightedRandomNumber() const {
+    int weights[totalFish]{ 30, 25, 20, 15, 10, 7, 5, 3 };
+    int totalWeight{ 0 };
+
+    for (int i = 0; i < totalFish; i++) {
+        totalWeight += weights[i];
+    }
+    int rnd = rand() & totalWeight;
+
+    for (int i = 0; i < totalFish; i++) {
+        if (rnd < weights[i])
+        {
+            std::cout << i + 1;
+            return i + 1;
+        }
+        rnd -= weights[i];
+    }
+    return 1;
 }

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <vector>
 class Texture;
 class Fish;
 class SkillCheck;
@@ -14,14 +14,12 @@ public:
 
 	Fisherman(const Vector2f& pos);
 	~Fisherman();
-	Fisherman(const Fisherman& other);
-	Fisherman& operator=(const Fisherman& other);
 
-	void Draw() const;
+	void Draw(const Vector2f& fishPos) const;
 	void Update(float elapsedSec);
 	void SetState(const State& state);
 	State GetState() const;
-	void ShowSkillCheck(const Vector2f& pos);
+	void Find(const Vector2f& pos);
 	void Catch();
 
 private:
@@ -34,6 +32,9 @@ private:
 	const Texture* m_pHookTexture;
 	const Texture* m_pFishTexture;
 	SkillCheck* m_pSkillCheck;
+	std::vector<Fish*> m_pFishCollection;
+	Fish* m_pCurrFish;
+	bool m_ShowFish;
 
 	void InitTextures();
 };

@@ -6,7 +6,7 @@
 
 SkillCheck::SkillCheck(const Vector2f& pos, float width, float speed) : m_Width(width), m_Position(pos), m_IsHidden(true), m_Speed{ speed },
 m_ShowFeedback{ false }, m_IsMoving{ false }, m_BorderRect{ pos.x - 200.f, pos.y, 400.f, 75.f }, m_PlayerRect{ pos.x - 100.f, pos.y, 5.f, 75.f },
-m_pFeedback{ nullptr }, m_FeedbackTimer{ 1.f }
+m_pFeedback{ }, m_FeedbackTimer{ 1.f }
 {
 }
 
@@ -68,19 +68,22 @@ void SkillCheck::ToggleVisibility()
 	m_IsHidden = !m_IsHidden;
 }
 
-void SkillCheck::CheckSucces()
+bool SkillCheck::CheckSucces()
 {
 	m_ShowFeedback = true;
 	std::string font{ "Font.ttf" };
 	std::string text{ "" };
 
+	delete m_pFeedback;
 	if (m_PlayerRect.left <= m_Position.x + m_Width && m_PlayerRect.left >= m_Position.x)
 	{
 		text = "Nice! You got it!";
 		m_pFeedback = new Texture{ text, font, 50, Color4f{0.f, 1.f, 0.f, 1.f} };
+		return true;
 	}
 	else {
 		text = "Snap! It got away...";
 		m_pFeedback = new Texture{ text, font, 50, Color4f{1.f, 0.f, 0.f, 1.f} };
+		return false;
 	}
 }

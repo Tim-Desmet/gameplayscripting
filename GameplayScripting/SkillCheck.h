@@ -10,6 +10,7 @@ public:
 	void Update(float elapsedSec);
 	void Stop();
 	void ToggleVisibility();
+	bool CheckSucces();
 
 private:
 	Vector2f m_Position;
@@ -23,7 +24,5 @@ private:
 	bool m_ShowFeedback;
 	Texture* m_pFeedback;
 	float m_FeedbackTimer;
-	
-	void CheckSucces();
 };
 
