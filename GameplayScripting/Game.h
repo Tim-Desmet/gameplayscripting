@@ -31,9 +31,6 @@ private:
 	void Cleanup( );
 	void ClearBackground( ) const;
 
-	void DrawMap() const;
-	void DrawWater() const;
-
 	Texture* m_pWaterTexture;
 	Texture* m_pFishingHutTexture;
 	Fisherman* m_pFisherman;

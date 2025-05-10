@@ -21,6 +21,7 @@ public:
 	State GetState() const;
 	void Find(const Vector2f& pos);
 	void Catch();
+	void CastRod();
 
 private:
 	Vector2f m_Pos;

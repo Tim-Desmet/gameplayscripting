@@ -8,7 +8,7 @@
 
 Fisherman::Fisherman(const Vector2f& pos)
 	: m_Pos{ pos }, m_State{ State::idle }, m_CurrFrame{ 0 }, m_Cols{ 4 }, m_AnimTime{ 0.f },
-	m_pSkillCheck{ new SkillCheck(pos, 20.f, 300.f) }, m_pCurrFish{}, m_ShowFish{ false }
+	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }
 {
 	InitTextures();
 }
@@ -131,7 +131,7 @@ void Fisherman::Find(const Vector2f& pos)
 	if (m_ShowFish == false)
 	{
 		delete m_pSkillCheck;
-		m_pSkillCheck = new SkillCheck(pos, 20.f, 300.f);
+		m_pSkillCheck = new SkillCheck(Vector2f{ pos.x, pos.y }, 20.f, 300.f);
 		m_pSkillCheck->ToggleVisibility();
 		m_pCurrFish = new Fish();
 		m_ShowFish = true;
@@ -140,17 +140,26 @@ void Fisherman::Find(const Vector2f& pos)
 
 void Fisherman::Catch()
 {
-	m_pSkillCheck->Stop();
-	m_ShowFish = false;
-	if (m_pSkillCheck->CheckSucces())
+	if (m_State == State::fishing)
 	{
-		m_pFishCollection.push_back(m_pCurrFish);
+		m_pSkillCheck->Stop();
+		m_ShowFish = false;
+		if (m_pSkillCheck->CheckSucces())
+		{
+			m_pFishCollection.push_back(m_pCurrFish);
+		}
+		else
+		{
+			delete m_pCurrFish;
+		}
+		m_pCurrFish = nullptr;
+		//m_State = State::idle;
 	}
-	else
-	{
-		delete m_pCurrFish;
-	}
-	m_pCurrFish = nullptr;
+}
+
+void Fisherman::CastRod()
+{
+
 }
 
 void Fisherman::InitTextures()

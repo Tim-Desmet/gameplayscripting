@@ -28,7 +28,7 @@ void SkillCheck::Draw() const
 		utils::FillRect(m_PlayerRect);
 		if (m_ShowFeedback == true)
 		{
-			m_pFeedback->Draw(Vector2f{ m_Position.x - m_pFeedback->GetWidth() / 2, m_Position.y * 1.5f});
+			m_pFeedback->Draw(Vector2f{ m_Position.x - m_pFeedback->GetWidth() / 2, m_Position.y - m_pFeedback->GetHeight() - 10.f});
 		}
 	}
 }
@@ -38,7 +38,7 @@ void SkillCheck::Update(float elapsedSec)
 	if (m_IsHidden == false)
 	{
 		m_PlayerRect.left += m_Speed * elapsedSec;
-		if (m_PlayerRect.left + m_Width >= m_BorderRect.left + m_BorderRect.width || m_PlayerRect.left <= m_BorderRect.left)
+		if (m_PlayerRect.left + m_PlayerRect.width >= m_BorderRect.left + m_BorderRect.width || m_PlayerRect.left <= m_BorderRect.left)
 		{
 			m_Speed = -m_Speed;
 		}
@@ -59,7 +59,6 @@ void SkillCheck::Stop()
 	if (m_IsHidden == false)
 	{
 		m_Speed = 0.f;
-		CheckSucces();
 	}
 }
 
@@ -75,7 +74,7 @@ bool SkillCheck::CheckSucces()
 	std::string text{ "" };
 
 	delete m_pFeedback;
-	if (m_PlayerRect.left <= m_Position.x + m_Width && m_PlayerRect.left >= m_Position.x)
+	if (m_PlayerRect.left <= m_Position.x + m_Width && m_PlayerRect.left + m_PlayerRect.width >= m_Position.x)
 	{
 		text = "Nice! You got it!";
 		m_pFeedback = new Texture{ text, font, 50, Color4f{0.f, 1.f, 0.f, 1.f} };

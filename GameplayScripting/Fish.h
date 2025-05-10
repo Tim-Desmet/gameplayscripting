@@ -21,5 +21,6 @@ private:
 	const int m_NumFrames;
 	float m_AnimTime;
 	const float m_FrameTime;
+	int m_Amount;
 };
 

@@ -17,10 +17,10 @@ Game::~Game( )
 
 void Game::Initialize( )
 {
-	m_pWaterTexture = new Texture{"Objects/Water.png"};
+	m_pWaterTexture = new Texture{"Objects/ocean.png"};
 	m_pFishingHutTexture = new Texture{"Objects/Fishing_hut.png"};
 
-	const Vector2f fisherPosisher{ 135.f, GetViewPort().height / 4 + 10.f };
+	const Vector2f fisherPosisher{ 135.f, GetViewPort().height / 2 + 10.f };
 	m_pFisherman = new Fisherman{ fisherPosisher };
 }
 
@@ -42,7 +42,11 @@ void Game::Update( float elapsedSec )
 void Game::Draw( ) const
 {
 	ClearBackground( );
-	DrawMap();
+	glPushMatrix();
+	glScalef(1.7f, 1.7f, 1.f);
+	m_pWaterTexture->Draw();
+	glPopMatrix();
+	m_pFishingHutTexture->Draw(Vector2f{ -30.f, GetViewPort().height / 2 }, Rectf{ 0.f, 0.f, m_pFishingHutTexture->GetWidth(), 2 * m_pFishingHutTexture->GetHeight() / 3 - 8.f });
 	m_pFisherman->Draw(Vector2f(GetViewPort().width / 2, 3 * GetViewPort().height / 4));
 }
 
@@ -52,7 +56,7 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	{
 	case SDLK_e:
 		m_pFisherman->SetState(Fisherman::State::fishing);
-		m_pFisherman->Find(Vector2f(GetViewPort().width / 2, GetViewPort().height / 2));
+		m_pFisherman->Find(Vector2f(GetViewPort().width / 2, 4 * GetViewPort().height / 5));
 		break;
 	case SDLK_q:
 		m_pFisherman->SetState(Fisherman::State::hook);
@@ -129,25 +133,18 @@ void Game::ClearBackground( ) const
 	glClear( GL_COLOR_BUFFER_BIT );
 }
 
-void Game::DrawMap() const
-{
-	DrawWater();
-	m_pFishingHutTexture->Draw(Vector2f{ -30.f, GetViewPort().height / 4 },
-		Rectf{0.f, 0.f, m_pFishingHutTexture->GetWidth(), 2 * m_pFishingHutTexture->GetHeight() / 3 - 8.f});
-}
-
-void Game::DrawWater() const
-{
-	const float height{ m_pWaterTexture->GetHeight() / 3 - 10.f};
-	const float width{ m_pWaterTexture->GetWidth() };
-	const Rectf texClip{ 0.f, 0.f, width, height };
-
-	for (float yPos = (GetViewPort().height / 3); yPos >= -height; yPos -= height)
-	{
-		for (float xPos = 0.f; xPos < GetViewPort().width; xPos += width)
-		{
-			Rectf rect{ xPos, yPos, width, height };
-			m_pWaterTexture->Draw(rect, texClip);
-		}
-	}
-}
+//void Game::DrawWater() const
+//{
+//	const float height{ m_pWaterTexture->GetHeight() / 3 - 10.f};
+//	const float width{ m_pWaterTexture->GetWidth() };
+//	const Rectf texClip{ 0.f, 0.f, width, height };
+//
+//	for (float yPos = (GetViewPort().height / 3); yPos >= -height; yPos -= height)
+//	{
+//		for (float xPos = 0.f; xPos < GetViewPort().width; xPos += width)
+//		{
+//			Rectf rect{ xPos, yPos, width, height };
+//			m_pWaterTexture->Draw(rect, texClip);
+//		}
+//	}
+//}
