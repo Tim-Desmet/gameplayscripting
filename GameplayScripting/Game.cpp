@@ -55,11 +55,7 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	switch (e.keysym.sym)
 	{
 	case SDLK_e:
-		m_pFisherman->SetState(Fisherman::State::fishing);
-		m_pFisherman->Find(Vector2f(GetViewPort().width / 2, 4 * GetViewPort().height / 5));
-		break;
-	case SDLK_q:
-		m_pFisherman->SetState(Fisherman::State::hook);
+		m_pFisherman->Find(Vector2f(GetViewPort().width, GetViewPort().height));
 		break;
 	case SDLK_SPACE:
 		m_pFisherman->Catch();

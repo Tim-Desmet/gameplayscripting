@@ -2,7 +2,8 @@
 #include <vector>
 class Texture;
 class Fish;
-class SkillCheck;
+class RectSkillCheck;
+class CircleSkillCheck;
 class Fisherman 
 {
 public:
@@ -17,8 +18,6 @@ public:
 
 	void Draw(const Vector2f& fishPos) const;
 	void Update(float elapsedSec);
-	void SetState(const State& state);
-	State GetState() const;
 	void Find(const Vector2f& pos);
 	void Catch();
 	void CastRod();
@@ -32,7 +31,8 @@ private:
 	const Texture* m_pIdleTexture;
 	const Texture* m_pHookTexture;
 	const Texture* m_pFishTexture;
-	SkillCheck* m_pSkillCheck;
+	RectSkillCheck* m_pSkillCheck;
+	CircleSkillCheck* m_pCircleSkillCheck;
 	std::vector<Fish*> m_pFishCollection;
 	Fish* m_pCurrFish;
 	bool m_ShowFish;

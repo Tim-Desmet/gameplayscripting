@@ -1,14 +1,15 @@
 #include "pch.h"
 #include "Fisherman.h"
 #include "Texture.h"
-#include "SkillCheck.h"
+#include "RectSkillCheck.h"
+#include "CircleSkillCheck.h"
 #include "Fish.h"
 #include <vector>
 #include <iostream>
 
 Fisherman::Fisherman(const Vector2f& pos)
 	: m_Pos{ pos }, m_State{ State::idle }, m_CurrFrame{ 0 }, m_Cols{ 4 }, m_AnimTime{ 0.f },
-	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }
+	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }, m_pCircleSkillCheck{}
 {
 	InitTextures();
 }
@@ -23,6 +24,8 @@ Fisherman::~Fisherman()
 	m_pFishTexture = nullptr;
 	delete m_pSkillCheck;
 	m_pSkillCheck = nullptr;
+	delete m_pCircleSkillCheck;
+	m_pCircleSkillCheck = nullptr;
 	delete m_pCurrFish;
 	m_pCurrFish = nullptr;
 	for (Fish* fish : m_pFishCollection)
@@ -60,10 +63,19 @@ void Fisherman::Draw(const Vector2f& fishPos) const
 		height = m_pFishTexture->GetHeight();
 		srcRect = Rectf{ m_CurrFrame * width, 0.f, width, height };
 		m_pFishTexture->Draw(dstRect, srcRect);
-		m_pSkillCheck->Draw();
 		break;
 	default:
 		break;
+	}
+
+	if (m_pCircleSkillCheck != nullptr)
+	{
+		m_pCircleSkillCheck->Draw();
+	}
+
+	if (m_pSkillCheck != nullptr)
+	{
+		m_pSkillCheck->Draw();
 	}
 
 	if (m_ShowFish == true)
@@ -105,7 +117,13 @@ void Fisherman::Update(float elapsedSec)
 			m_CurrFrame = (m_CurrFrame + 1) % m_Cols;
 		}
 	}
-	if (m_State == State::fishing)
+
+	if (m_pCircleSkillCheck != nullptr)
+	{
+		m_pCircleSkillCheck->Update(elapsedSec);
+	}
+
+	if (m_pSkillCheck != nullptr)
 	{
 		m_pSkillCheck->Update(elapsedSec);
 	}
@@ -116,23 +134,17 @@ void Fisherman::Update(float elapsedSec)
 	}
 }
 
-void Fisherman::SetState(const State& state)
-{
-	m_State = state;
-}
-
-Fisherman::State Fisherman::GetState() const
-{
-	return m_State;
-}
-
 void Fisherman::Find(const Vector2f& pos)
 {
+	m_State = State::fishing;
 	if (m_ShowFish == false)
 	{
 		delete m_pSkillCheck;
-		m_pSkillCheck = new SkillCheck(Vector2f{ pos.x, pos.y }, 20.f, 300.f);
+		delete m_pCircleSkillCheck;
+		m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, 4 * pos.y / 5 }, 20.f);
+		m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , M_PI / 6 };
 		m_pSkillCheck->ToggleVisibility();
+		m_pCircleSkillCheck->ToggleVisibility();
 		m_pCurrFish = new Fish();
 		m_ShowFish = true;
 	}
@@ -143,8 +155,9 @@ void Fisherman::Catch()
 	if (m_State == State::fishing)
 	{
 		m_pSkillCheck->Stop();
+		m_pCircleSkillCheck->Stop();
 		m_ShowFish = false;
-		if (m_pSkillCheck->CheckSucces())
+		if (m_pCircleSkillCheck->CheckSucces())
 		{
 			m_pFishCollection.push_back(m_pCurrFish);
 		}
@@ -153,7 +166,7 @@ void Fisherman::Catch()
 			delete m_pCurrFish;
 		}
 		m_pCurrFish = nullptr;
-		//m_State = State::idle;
+		m_State = State::hook;
 	}
 }
 

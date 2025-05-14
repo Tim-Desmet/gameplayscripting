@@ -12,6 +12,9 @@
 - Animation
 - Buy/Sell in Store:
 - Junk Selling
+- Boss slowly comes from right -> each catch does damage depending on rarity, HP/Speed ups per kill
+OR (pvz like) fish shoot at boss
+
 Healing
 Upgrades
 Bait -> Rarer catching

@@ -1,11 +1,11 @@
 #pragma once
 #include <utils.h>
 class Texture;
-class SkillCheck
+class RectSkillCheck
 {
 public:
-	SkillCheck(const Vector2f& pos, float width, float speed);
-	~SkillCheck();
+	RectSkillCheck(const Vector2f& pos, float width);
+	~RectSkillCheck();
 	void Draw() const;
 	void Update(float elapsedSec);
 	void Stop();

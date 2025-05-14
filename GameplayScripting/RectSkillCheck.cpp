@@ -1,22 +1,22 @@
 #include "pch.h"
-#include "SkillCheck.h"
+#include "RectSkillCheck.h"
 #include "Texture.h"
 #include <utils.h>
 #include <iostream>
 
-SkillCheck::SkillCheck(const Vector2f& pos, float width, float speed) : m_Width(width), m_Position(pos), m_IsHidden(true), m_Speed{ speed },
+RectSkillCheck::RectSkillCheck(const Vector2f& pos, float width) : m_Width(width), m_Position(pos), m_IsHidden(true), m_Speed{ 300.f },
 m_ShowFeedback{ false }, m_IsMoving{ false }, m_BorderRect{ pos.x - 200.f, pos.y, 400.f, 75.f }, m_PlayerRect{ pos.x - 100.f, pos.y, 5.f, 75.f },
 m_pFeedback{ }, m_FeedbackTimer{ 1.f }
 {
 }
 
-SkillCheck::~SkillCheck()
+RectSkillCheck::~RectSkillCheck()
 {
 	delete m_pFeedback;
 	m_pFeedback = nullptr;
 }
 
-void SkillCheck::Draw() const
+void RectSkillCheck::Draw() const
 {
 	if (m_IsHidden == false)
 	{
@@ -33,7 +33,7 @@ void SkillCheck::Draw() const
 	}
 }
 
-void SkillCheck::Update(float elapsedSec)
+void RectSkillCheck::Update(float elapsedSec)
 {
 	if (m_IsHidden == false)
 	{
@@ -54,7 +54,7 @@ void SkillCheck::Update(float elapsedSec)
 	}
 }
 
-void SkillCheck::Stop()
+void RectSkillCheck::Stop()
 {
 	if (m_IsHidden == false)
 	{
@@ -62,12 +62,12 @@ void SkillCheck::Stop()
 	}
 }
 
-void SkillCheck::ToggleVisibility()
+void RectSkillCheck::ToggleVisibility()
 {
 	m_IsHidden = !m_IsHidden;
 }
 
-bool SkillCheck::CheckSucces()
+bool RectSkillCheck::CheckSucces()
 {
 	m_ShowFeedback = true;
 	std::string font{ "Font.ttf" };

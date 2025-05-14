@@ -30,7 +30,10 @@
     <ClCompile Include="Fish.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SkillCheck.cpp">
+    <ClCompile Include="RectSkillCheck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleSkillCheck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,7 +50,10 @@
     <ClInclude Include="Fish.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SkillCheck.h">
+    <ClInclude Include="RectSkillCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleSkillCheck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
