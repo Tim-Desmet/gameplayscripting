@@ -33,7 +33,6 @@ private:
 	const Texture* m_pFishTexture;
 	RectSkillCheck* m_pSkillCheck;
 	CircleSkillCheck* m_pCircleSkillCheck;
-	std::vector<Fish*> m_pFishCollection;
 	Fish* m_pCurrFish;
 	bool m_ShowFish;
 

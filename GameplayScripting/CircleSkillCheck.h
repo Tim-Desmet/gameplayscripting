@@ -10,7 +10,7 @@ public:
 	void Stop();
 	void ToggleVisibility();
 	bool CheckSucces();
-
+	
 private:
 	Vector2f m_Position;
 	float m_Radius;
@@ -24,4 +24,3 @@ private:
 	Texture* m_pFeedback;
 	float m_FeedbackTimer;
 };
-

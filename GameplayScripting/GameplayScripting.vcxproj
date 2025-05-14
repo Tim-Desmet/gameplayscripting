@@ -157,6 +157,7 @@ xcopy "$(SolutionDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="CircleSkillCheck.cpp" />
     <ClCompile Include="Fish.cpp" />
     <ClCompile Include="Fisherman.cpp" />
@@ -164,14 +165,17 @@ xcopy "$(SolutionDir)Resources\*.*" "$(TargetDir)" /y /d /s</Command>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="RectSkillCheck.cpp" />
+    <ClCompile Include="SkillCheck.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="CircleSkillCheck.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="Fisherman.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RectSkillCheck.h" />
+    <ClInclude Include="SkillCheck.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

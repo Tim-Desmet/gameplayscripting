@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CircleSkillCheck.h"
+#include "SkillCheck.h"
 #include "Texture.h"
 #include <utils.h>
 

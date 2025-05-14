@@ -28,11 +28,6 @@ Fisherman::~Fisherman()
 	m_pCircleSkillCheck = nullptr;
 	delete m_pCurrFish;
 	m_pCurrFish = nullptr;
-	for (Fish* fish : m_pFishCollection)
-	{
-		delete fish;
-	}
-	m_pFishCollection.clear();
 
 }
 
@@ -82,13 +77,6 @@ void Fisherman::Draw(const Vector2f& fishPos) const
 	{
 		m_pCurrFish->Draw(fishPos);
 	}
-	if (m_pFishCollection.size() > 0)
-	{
-		for (size_t i = 0; i < m_pFishCollection.size(); i++)
-		{
-			m_pFishCollection[i]->Draw(Vector2f{ 50.f * i, 10.f });
-		}
-	}
 }
 
 void Fisherman::Update(float elapsedSec)
@@ -136,15 +124,27 @@ void Fisherman::Update(float elapsedSec)
 
 void Fisherman::Find(const Vector2f& pos)
 {
+	const int skillCheckAmount{ 2 };
+
 	m_State = State::fishing;
 	if (m_ShowFish == false)
 	{
+		int randSkillNr = rand() % skillCheckAmount;
 		delete m_pSkillCheck;
+		m_pSkillCheck = nullptr;
 		delete m_pCircleSkillCheck;
-		m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, 4 * pos.y / 5 }, 20.f);
-		m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , M_PI / 6 };
-		m_pSkillCheck->ToggleVisibility();
-		m_pCircleSkillCheck->ToggleVisibility();
+		m_pCircleSkillCheck = nullptr;
+
+		if (randSkillNr == 0)
+		{
+			m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, 4 * pos.y / 5 }, 20.f);
+			m_pSkillCheck->ToggleVisibility();
+		}
+		else if (randSkillNr == 1)
+		{
+			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , M_PI / 6 };
+			m_pCircleSkillCheck->ToggleVisibility();
+		}
 		m_pCurrFish = new Fish();
 		m_ShowFish = true;
 	}
@@ -154,17 +154,19 @@ void Fisherman::Catch()
 {
 	if (m_State == State::fishing)
 	{
-		m_pSkillCheck->Stop();
-		m_pCircleSkillCheck->Stop();
+		if (m_pSkillCheck != nullptr)
+		{
+			m_pSkillCheck->Stop();
+			m_pSkillCheck->CheckSucces();
+		}
+		else if (m_pCircleSkillCheck != nullptr)
+		{
+			m_pCircleSkillCheck->Stop();
+			m_pCircleSkillCheck->CheckSucces();
+		}
+
 		m_ShowFish = false;
-		if (m_pCircleSkillCheck->CheckSucces())
-		{
-			m_pFishCollection.push_back(m_pCurrFish);
-		}
-		else
-		{
-			delete m_pCurrFish;
-		}
+		delete m_pCurrFish;
 		m_pCurrFish = nullptr;
 		m_State = State::hook;
 	}

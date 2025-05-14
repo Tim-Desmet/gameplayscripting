@@ -13,7 +13,9 @@ public:
 	void Update(float elapsedSec);
 	float GetWidth() const;
 	float GetHeight() const;
-	int GetWeightedRandomNumber() const;
+	void SetRarity(int rar);
+	int GetRarity() const;
+	int GetWeightedRandomNumber();
 
 private:
 	Texture* m_pTexture;
@@ -21,6 +23,6 @@ private:
 	const int m_NumFrames;
 	float m_AnimTime;
 	const float m_FrameTime;
-	int m_Amount;
+	int m_Rarity;
 };
 

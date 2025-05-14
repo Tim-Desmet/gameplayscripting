@@ -4,7 +4,7 @@
 #include <cassert>
 
 Fish::Fish() : m_CurrFrame{ 1 }, m_AnimTime{ 0.f }, m_NumFrames{ 2 }, m_FrameTime{ 0.5f },
-m_pTexture{ new Texture{ "Objects/Catch/" + std::to_string(GetWeightedRandomNumber()) + ".png" } }, m_Amount{ 0 }
+m_pTexture{ new Texture{ "Objects/Catch/" + std::to_string(GetWeightedRandomNumber()) + ".png" } }, m_Rarity{ 1 }
 {
 }
 
@@ -43,7 +43,17 @@ float Fish::GetHeight() const
     return m_pTexture->GetHeight();
 }
 
-int Fish::GetWeightedRandomNumber() const {
+void Fish::SetRarity(int rar)
+{
+    m_Rarity = rar;
+}
+
+int Fish::GetRarity() const
+{
+    return m_Rarity;
+}
+
+int Fish::GetWeightedRandomNumber() {
     int weights[totalFish]{ 500, 240, 100, 60, 40, 30, 20, 10 };
     int totalWeight{ 0 };
 
@@ -55,7 +65,7 @@ int Fish::GetWeightedRandomNumber() const {
     for (int i = 0; i < totalFish; i++) {
         if (rnd < weights[i])
         {
-            std::cout << i + 1;
+            SetRarity(i + 1);
             return i + 1;
         }
         rnd -= weights[i];
