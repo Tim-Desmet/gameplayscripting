@@ -3,9 +3,9 @@
 #include <iostream>
 #include <cassert>
 
-Fish::Fish() : m_CurrFrame{ 1 }, m_AnimTime{ 0.f }, m_NumFrames{ 2 }, m_FrameTime{ 0.5f },
-m_pTexture{ new Texture{ "Objects/Catch/" + std::to_string(GetWeightedRandomNumber()) + ".png" } }, m_Rarity{ 1 }
+Fish::Fish() : m_CurrFrame{ 1 }, m_AnimTime{ 0.f }, m_NumFrames{ 2 }, m_FrameTime{ 0.5f }, m_Rarity{ GetWeightedRandomNumber() }
 {
+    m_pTexture = new Texture{ "Objects/Catch/" + std::to_string(m_Rarity) + ".png" };
 }
 
 Fish::~Fish()

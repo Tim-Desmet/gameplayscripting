@@ -3,6 +3,7 @@
 
 class Texture;
 class Fisherman;
+class Boss;
 class Game : public BaseGame
 {
 public:
@@ -34,4 +35,5 @@ private:
 	Texture* m_pWaterTexture;
 	Texture* m_pFishingHutTexture;
 	Fisherman* m_pFisherman;
+	Boss* m_pBoss;
 };

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Texture.h"
 #include "Fisherman.h"
+#include "Boss.h"
 #include <utils.h>
 
 Game::Game( const Window& window ) 
@@ -21,7 +22,9 @@ void Game::Initialize( )
 	m_pFishingHutTexture = new Texture{"Objects/Fishing_hut.png"};
 
 	const Vector2f fisherPosisher{ 135.f, GetViewPort().height / 2 + 10.f };
-	m_pFisherman = new Fisherman{ fisherPosisher };
+	m_pFisherman = new Fisherman(fisherPosisher);
+	const Vector2f bossStartPos{ GetViewPort().width, GetViewPort().height / 3 + 20.f };
+	m_pBoss = new Boss(bossStartPos);
 }
 
 void Game::Cleanup( )
@@ -32,11 +35,14 @@ void Game::Cleanup( )
 	m_pFishingHutTexture = nullptr;
 	delete m_pFisherman;
 	m_pFisherman = nullptr;
+	delete m_pBoss;
+	m_pBoss = nullptr;
 }
 
 void Game::Update( float elapsedSec )
 {
 	m_pFisherman->Update(elapsedSec);
+	m_pBoss->Update(elapsedSec);
 }
 
 void Game::Draw( ) const
@@ -48,6 +54,7 @@ void Game::Draw( ) const
 	glPopMatrix();
 	m_pFishingHutTexture->Draw(Vector2f{ -30.f, GetViewPort().height / 2 }, Rectf{ 0.f, 0.f, m_pFishingHutTexture->GetWidth(), 2 * m_pFishingHutTexture->GetHeight() / 3 - 8.f });
 	m_pFisherman->Draw(Vector2f(GetViewPort().width / 2, 3 * GetViewPort().height / 4));
+	m_pBoss->Draw();
 }
 
 void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )

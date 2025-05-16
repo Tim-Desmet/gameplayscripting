@@ -134,18 +134,18 @@ void Fisherman::Find(const Vector2f& pos)
 		m_pSkillCheck = nullptr;
 		delete m_pCircleSkillCheck;
 		m_pCircleSkillCheck = nullptr;
-
+		m_pCurrFish = new Fish();
+		std::cout << m_pCurrFish->GetRarity() << std::endl;
 		if (randSkillNr == 0)
 		{
-			m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, 4 * pos.y / 5 }, 20.f);
+			m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, pos.y / 2 }, 100.f / m_pCurrFish->GetRarity());
 			m_pSkillCheck->ToggleVisibility();
 		}
 		else if (randSkillNr == 1)
 		{
-			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , M_PI / 6 };
+			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , (float)M_PI / (2 * m_pCurrFish->GetRarity())};
 			m_pCircleSkillCheck->ToggleVisibility();
 		}
-		m_pCurrFish = new Fish();
 		m_ShowFish = true;
 	}
 }

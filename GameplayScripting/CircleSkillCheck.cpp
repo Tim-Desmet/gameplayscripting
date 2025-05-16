@@ -3,11 +3,16 @@
 #include "SkillCheck.h"
 #include "Texture.h"
 #include <utils.h>
+#include <iostream>
 
 CircleSkillCheck::CircleSkillCheck(const Vector2f& pos, const float arcSize) : m_Position{ pos }, m_Radius{ 100.f }, m_Speed{ 5.f },
 m_ArcSize{ arcSize }, m_Angle{ (rand() % 360) * (float)M_PI / 180.f }, m_SpinAngle{ 0.f }, m_IsHidden{ true }, m_FeedbackTimer{ 1.f },
 m_ShowFeedback{ false }, m_pFeedback{ }
 {
+	if (m_Angle >= 2 * M_PI - m_ArcSize)
+	{
+		m_Angle -= 2 * M_PI - m_ArcSize;
+	}
 }
 
 CircleSkillCheck::~CircleSkillCheck()
@@ -49,7 +54,7 @@ void CircleSkillCheck::Update(float elapsedSec)
 		m_SpinAngle += m_Speed * elapsedSec;
 		if (m_SpinAngle >= 2.f * float(M_PI))
 		{
-			m_SpinAngle -= 2.f * float(M_PI);
+			m_SpinAngle = 0.f;
 		}
 		if (m_ShowFeedback == true)
 		{

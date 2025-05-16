@@ -4,10 +4,12 @@
 #include <utils.h>
 #include <iostream>
 
-RectSkillCheck::RectSkillCheck(const Vector2f& pos, float width) : m_Width(width), m_Position(pos), m_IsHidden(true), m_Speed{ 300.f },
-m_ShowFeedback{ false }, m_IsMoving{ false }, m_BorderRect{ pos.x - 200.f, pos.y, 400.f, 75.f }, m_PlayerRect{ pos.x - 100.f, pos.y, 5.f, 75.f },
+RectSkillCheck::RectSkillCheck(const Vector2f& pos, const float width) : m_Width(width), m_IsHidden(true), m_Speed{ 300.f },
+m_ShowFeedback{ false }, m_IsMoving{ false }, m_BorderRect{ pos.x - 200.f, pos.y, 400.f, 75.f }, m_PlayerRect{ pos.x - 200.f, pos.y, 5.f, 75.f },
 m_pFeedback{ }, m_FeedbackTimer{ 1.f }
 {
+	m_Position.x = rand() % (int)(m_BorderRect.width - m_BorderRect.left) + m_BorderRect.left;
+	m_Position.y = pos.y;
 }
 
 RectSkillCheck::~RectSkillCheck()
@@ -24,11 +26,11 @@ void RectSkillCheck::Draw() const
 		utils::FillRect(m_BorderRect);
 		utils::SetColor(Color4f(1.f, 1.f, 0.f, 0.75f));
 		utils::FillRect(m_Position.x, m_Position.y, m_Width, m_BorderRect.height);
-		utils::SetColor(Color4f(1.f, 1.f, 1.f, 1.f));
+		utils::SetColor(Color4f(1.f, 0.f, 0.f, 1.f));
 		utils::FillRect(m_PlayerRect);
 		if (m_ShowFeedback == true)
 		{
-			m_pFeedback->Draw(Vector2f{ m_Position.x - m_pFeedback->GetWidth() / 2, m_Position.y - m_pFeedback->GetHeight() - 10.f});
+			m_pFeedback->Draw(Vector2f{ m_BorderRect.left + 200.f - m_pFeedback->GetWidth() / 2, m_Position.y - m_pFeedback->GetHeight() - 10.f});
 		}
 	}
 }

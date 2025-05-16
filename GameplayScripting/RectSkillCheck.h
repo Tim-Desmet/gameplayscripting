@@ -4,7 +4,7 @@ class Texture;
 class RectSkillCheck
 {
 public:
-	RectSkillCheck(const Vector2f& pos, float width);
+	RectSkillCheck(const Vector2f& pos, const float width);
 	~RectSkillCheck();
 	void Draw() const;
 	void Update(float elapsedSec);
