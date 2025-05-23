@@ -32,8 +32,14 @@ private:
 	void Cleanup( );
 	void ClearBackground( ) const;
 
+	void GameOver();
+
+	bool m_ShowInfo;
+	bool m_IsGameOver;
 	Texture* m_pWaterTexture;
 	Texture* m_pFishingHutTexture;
+	Texture* m_pInfoTexture;
+	Texture* m_pGameOverTexture;
 	Fisherman* m_pFisherman;
 	Boss* m_pBoss;
 };

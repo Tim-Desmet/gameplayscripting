@@ -4,6 +4,7 @@ class Texture;
 class Fish;
 class RectSkillCheck;
 class CircleSkillCheck;
+class Boss;
 class Fisherman 
 {
 public:
@@ -19,7 +20,7 @@ public:
 	void Draw(const Vector2f& fishPos) const;
 	void Update(float elapsedSec);
 	void Find(const Vector2f& pos);
-	void Catch();
+	void Catch(Boss& boss);
 	void CastRod();
 
 private:

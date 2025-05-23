@@ -30,7 +30,7 @@ void RectSkillCheck::Draw() const
 		utils::FillRect(m_PlayerRect);
 		if (m_ShowFeedback == true)
 		{
-			m_pFeedback->Draw(Vector2f{ m_BorderRect.left + 200.f - m_pFeedback->GetWidth() / 2, m_Position.y - m_pFeedback->GetHeight() - 10.f});
+			m_pFeedback->Draw(Vector2f{ m_BorderRect.left + 200.f - m_pFeedback->GetWidth() / 2, m_Position.y - m_pFeedback->GetHeight() + 175.f});
 		}
 	}
 }

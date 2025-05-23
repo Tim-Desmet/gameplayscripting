@@ -4,6 +4,7 @@
 #include "RectSkillCheck.h"
 #include "CircleSkillCheck.h"
 #include "Fish.h"
+#include "Boss.h"
 #include <vector>
 #include <iostream>
 
@@ -150,7 +151,7 @@ void Fisherman::Find(const Vector2f& pos)
 	}
 }
 
-void Fisherman::Catch()
+void Fisherman::Catch(Boss& boss)
 {
 	if (m_State == State::fishing)
 	{
@@ -158,11 +159,19 @@ void Fisherman::Catch()
 		{
 			m_pSkillCheck->Stop();
 			m_pSkillCheck->CheckSucces();
+			if (m_pSkillCheck->CheckSucces() == true)
+			{
+				boss.TakeDamage(m_pCurrFish->GetRarity());
+			}
 		}
 		else if (m_pCircleSkillCheck != nullptr)
 		{
 			m_pCircleSkillCheck->Stop();
 			m_pCircleSkillCheck->CheckSucces();
+			if (m_pCircleSkillCheck->CheckSucces() == true)
+			{
+				boss.TakeDamage(m_pCurrFish->GetRarity());
+			}
 		}
 
 		m_ShowFish = false;
