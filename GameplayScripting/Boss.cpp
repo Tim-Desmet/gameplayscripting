@@ -3,13 +3,10 @@
 #include "Texture.h"
 #include "Animation.h"
 
-Boss::Boss(const Vector2f& pos) : m_InitPos{ pos.x }, m_Position{ pos }, m_HitPoints{ 50 }, m_Speed{ 100.f }, m_BossNr{ GetRandBoss()},
-m_IsHurt{ false }
+Boss::Boss(const Vector2f& pos) : m_InitPos{ pos.x }, m_Position{ pos }, m_HitPoints{ 50 }, m_Speed{ 10.f }, m_BossNr{ GetRandBoss() },
+m_State{ State::walk }
 {
-	m_pWalkTexture = new Texture{"Bosses/" + std::to_string(m_BossNr) + "/Walk.png"};
-	m_pWalkAnimation = new Animation{m_pWalkTexture, 4, 1.f};
-	m_pHitTexture = new Texture{ "Bosses/" + std::to_string(m_BossNr) + "/Hurt.png" };
-	m_pHitAnimation = new Animation{ m_pHitTexture, 2, 1.f };
+	LoadTextures();
 }
 
 Boss::~Boss()
@@ -18,40 +15,54 @@ Boss::~Boss()
 	m_pWalkTexture = nullptr;
 	delete m_pWalkAnimation;
 	m_pWalkAnimation = nullptr;
-	delete m_pHitTexture;
-	m_pHitTexture = nullptr;
-	delete m_pHitAnimation;
-	m_pHitAnimation = nullptr;
+	delete m_pHurtTexture;
+	m_pHurtTexture = nullptr;
+	delete m_pHurtAnimation;
+	m_pHurtAnimation = nullptr;
 }
 
 void Boss::Draw() const
 {
-	if (m_IsHurt == true)
+	glPushMatrix();
+	glTranslatef(m_Position.x, m_Position.y, 0.f);
+	glScalef(3.f, 3.f, 1.f);
+	switch (m_State)
 	{
-		m_pHitAnimation->Draw(m_Position, true);
+	case Boss::State::walk:
+		m_pWalkAnimation->Draw(Vector2f{ 0.f, 0.f }, true);
+		break;
+	case Boss::State::hurt:
+		m_pHurtAnimation->Draw(Vector2f{ 0.f, 0.f }, true);
+		break;
+	case Boss::State::dead:
+		break;
+	default:
+		break;
 	}
-	else {
-		glPushMatrix();
-		glScalef(2.f, 2.f, 1.f);
-		m_pWalkAnimation->Draw(m_Position, true);
-		glPopMatrix();
-	}
+	glPopMatrix();
 }
 
 void Boss::Update(float elapsedSec)
 {
 	m_Position.x -= m_Speed * elapsedSec;
 
-	if (m_IsHurt == true)
+	switch (m_State)
 	{
-		m_pHitAnimation->Update(elapsedSec);
-		if (m_pHitAnimation->IsFinished() == true)
-		{
-			m_IsHurt == false;
-		}
-	}
-	else {
+	case Boss::State::walk:
 		m_pWalkAnimation->Update(elapsedSec);
+		break;
+	case Boss::State::hurt:
+		m_pHurtAnimation->Update(elapsedSec);
+		if (m_pHurtAnimation->IsFinished() == true)
+		{
+			m_State = State::walk;
+			m_pHurtAnimation->SetFrame(0);
+		}
+		break;
+	case Boss::State::dead:
+		break;
+	default:
+		break;
 	}
 }
 
@@ -62,7 +73,7 @@ float Boss::GetXPos() const
 
 void Boss::TakeDamage(int damage)
 {
-	m_IsHurt = true;
+	m_State = State::hurt;
 	m_HitPoints -= damage;
 	if (m_HitPoints <= 0)
 	{
@@ -75,10 +86,51 @@ void Boss::Die()
 	m_HitPoints = 50;
 	m_BossNr = GetRandBoss();
 	delete m_pWalkTexture;
-	m_pWalkTexture = new Texture{ "Bosses/" + std::to_string(m_BossNr) + "/Walk.png" };
-	delete m_pHitTexture;
-	m_pHitTexture = new Texture{ "Bosses/" + std::to_string(m_BossNr) + "/Hurt.png" };
+	delete m_pWalkAnimation;
+	delete m_pHurtTexture;
+	delete m_pHurtAnimation;
+	LoadTextures();
 	m_Position.x = m_InitPos;
+}
+
+void Boss::LoadTextures()
+{
+	int walkFrames{ 4 };
+	switch (m_BossNr)
+	{
+	case 1:
+		walkFrames = 4;
+		m_Speed = 15;
+		m_HitPoints = 30;
+		break;
+	case 2:
+		walkFrames = 6;
+		m_Speed = 25;
+		m_HitPoints = 20;
+		break;
+	case 3:
+		walkFrames = 4;
+		m_Speed = 30;
+		m_HitPoints = 15;
+		break;
+	case 4:
+		walkFrames = 6;
+		m_Speed = 10;
+		m_HitPoints = 35;
+		break;
+	case 5:
+		walkFrames = 4;
+		m_Speed = 50;
+		m_HitPoints = 10;
+		break;
+	default:
+		break;
+	}
+	m_pWalkTexture = new Texture{ "Bosses/" + std::to_string(m_BossNr) + "/Walk.png" };
+	m_pWalkAnimation = new Animation{ m_pWalkTexture, walkFrames, 0.2f };
+	m_pHurtTexture = new Texture{ "Bosses/" + std::to_string(m_BossNr) + "/Hurt.png" };
+	m_pHurtAnimation = new Animation{ m_pHurtTexture, 2, 0.2f };
+	m_pHurtAnimation->SetLooping(false);
 }
 
 int Boss::GetRandBoss()

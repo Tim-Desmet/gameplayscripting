@@ -16,10 +16,14 @@ Fish::~Fish()
 
 void Fish::Draw(const Vector2f& pos) const
 {
-    float width = m_pTexture->GetWidth() / m_NumFrames;
-    float height = m_pTexture->GetHeight();
-    Rectf srcRect = Rectf{ m_CurrFrame * width, 0.f, width, height };
-	m_pTexture->Draw(pos, srcRect);
+	float width = m_pTexture->GetWidth() / m_NumFrames;
+	float height = m_pTexture->GetHeight();
+	Rectf srcRect = Rectf{ m_CurrFrame * width, 0.f, width, height };
+	glPushMatrix();
+    glTranslatef(pos.x, pos.y, 0.f);
+    glScalef(3.f, 3.f, 1.f);
+    m_pTexture->Draw(Vector2f{ -width / 2, 0.f }, srcRect);
+	glPopMatrix();
 }
 
 void Fish::Update(float elapsedSec)

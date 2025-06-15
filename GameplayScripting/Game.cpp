@@ -19,6 +19,7 @@ Game::~Game( )
 void Game::Initialize( )
 {
 	m_ShowInfo = false;
+	m_IsGameOver = false;
 	std::string info{ "Controls: E = Cast rod, SPACEBAR = Attempt skillcheck" };
 	std::string gameOver{ "Game Over X(" };
 
@@ -29,7 +30,7 @@ void Game::Initialize( )
 
 	const Vector2f fisherPosisher{ 135.f, GetViewPort().height / 2 + 10.f };
 	m_pFisherman = new Fisherman(fisherPosisher);
-	const Vector2f bossStartPos{ GetViewPort().width, GetViewPort().height / 3 + 20.f };
+	const Vector2f bossStartPos{ GetViewPort().width - 20.f, GetViewPort().height / 3 };
 	m_pBoss = new Boss(bossStartPos);
 }
 
@@ -52,13 +53,16 @@ void Game::Cleanup( )
 void Game::Update( float elapsedSec )
 {
 	const float fisherPosisherX{ 135.f };
-	m_pFisherman->Update(elapsedSec);
-	if (m_pBoss != nullptr)
+	if (m_IsGameOver == false)
 	{
-		m_pBoss->Update(elapsedSec);
-		if (m_pBoss->GetXPos() <= fisherPosisherX)
+		m_pFisherman->Update(elapsedSec);
+		if (m_pBoss != nullptr)
 		{
-			GameOver();
+			m_pBoss->Update(elapsedSec);
+			if (m_pBoss->GetXPos() <= fisherPosisherX)
+			{
+				GameOver();
+			}
 		}
 	}
 }
@@ -94,7 +98,6 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	switch (e.keysym.sym)
 	{
 	case SDLK_e:
-		m_IsGameOver = false;
 		m_pFisherman->Find(Vector2f(GetViewPort().width, GetViewPort().height));
 		break;
 	case SDLK_SPACE:
@@ -103,6 +106,13 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	case SDLK_i:
 		m_ShowInfo = !m_ShowInfo;
 		break;
+	case SDLK_r:
+		if (m_IsGameOver == true)
+		{
+			m_IsGameOver = false;
+			const Vector2f bossStartPos{ GetViewPort().width - 20.f, GetViewPort().height / 3 };
+			m_pBoss = new Boss(bossStartPos);
+		}
 	default:
 		break;
 	}
