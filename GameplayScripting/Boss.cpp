@@ -78,7 +78,7 @@ float Boss::GetXPos() const
 	return m_Position.x;
 }
 
-void Boss::TakeDamage(int damage)
+int Boss::TakeDamage(int damage)
 {
 	m_State = State::hurt;
 	m_HitPoints -= damage;
@@ -88,7 +88,9 @@ void Boss::TakeDamage(int damage)
 	{
 		delete m_pDamageTexture;
 		Die();
+		return 10;
 	}
+	return 0;
 }
 
 void Boss::Die()

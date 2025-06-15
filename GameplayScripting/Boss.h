@@ -15,7 +15,7 @@ public:
 	void Draw() const;
 	void Update(float elapsedSec);
 	float GetXPos() const;
-	void TakeDamage(int damage);
+	int TakeDamage(int damage);
 	void Die();
 
 private:

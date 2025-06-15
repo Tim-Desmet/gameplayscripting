@@ -96,8 +96,8 @@ void Game::Draw( ) const
 	}
 	if (m_IsGameOver == true)
 	{
-		m_pGameOverTexture->Draw(Vector2f{GetViewPort().width / 2 - m_pGameOverTexture->GetWidth() / 2, GetViewPort().height / 2});
-		m_pRestartTexture->Draw(Vector2f{ GetViewPort().width / 2 - m_pGameOverTexture->GetWidth() / 2, GetViewPort().height / 2 });
+		m_pGameOverTexture->Draw(Vector2f{ GetViewPort().width / 2 - m_pGameOverTexture->GetWidth() / 2, GetViewPort().height / 2 });
+		m_pRestartTexture->Draw(Vector2f{ GetViewPort().width / 2 - m_pRestartTexture->GetWidth() / 2, GetViewPort().height / 2 - 20.f });
 		Rectf gameOverBlur{ GetViewPort().left + 5.f, GetViewPort().bottom + 5.f, GetViewPort().width - 10.f, GetViewPort().height - 10.f };
 		utils::SetColor(Color4f{ 0.f, 0.f, 0.f, 0.5f });
 		utils::FillRect(gameOverBlur);

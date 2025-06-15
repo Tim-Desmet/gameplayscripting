@@ -166,8 +166,7 @@ int Fisherman::Catch(Boss& boss)
 			m_pSkillCheck->CheckSucces();
 			if (m_pSkillCheck->CheckSucces() == true)
 			{
-				boss.TakeDamage(score);
-				return score;
+				return score + boss.TakeDamage(score);
 			}
 			return 0;
 		}
@@ -177,8 +176,7 @@ int Fisherman::Catch(Boss& boss)
 			m_pCircleSkillCheck->CheckSucces();
 			if (m_pCircleSkillCheck->CheckSucces() == true)
 			{
-				boss.TakeDamage(score);
-				return score;
+				return score + boss.TakeDamage(score);
 			}
 			return 0;
 		}
