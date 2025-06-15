@@ -36,10 +36,14 @@ private:
 
 	bool m_ShowInfo;
 	bool m_IsGameOver;
+	bool m_IsPaused;
+	int m_Score;
 	Texture* m_pWaterTexture;
 	Texture* m_pFishingHutTexture;
 	Texture* m_pInfoTexture;
 	Texture* m_pGameOverTexture;
+	Texture* m_pRestartTexture;
+	Texture* m_pScoreTexture;
 	Fisherman* m_pFisherman;
 	Boss* m_pBoss;
 };

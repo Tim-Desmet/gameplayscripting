@@ -151,18 +151,25 @@ void Fisherman::Find(const Vector2f& pos)
 	}
 }
 
-void Fisherman::Catch(Boss& boss)
+int Fisherman::Catch(Boss& boss)
 {
 	if (m_State == State::fishing)
 	{
+		const int score{ m_pCurrFish->GetRarity() };
+		m_ShowFish = false;
+		delete m_pCurrFish;
+		m_pCurrFish = nullptr;
+		m_State = State::hook;
 		if (m_pSkillCheck != nullptr)
 		{
 			m_pSkillCheck->Stop();
 			m_pSkillCheck->CheckSucces();
 			if (m_pSkillCheck->CheckSucces() == true)
 			{
-				boss.TakeDamage(m_pCurrFish->GetRarity());
+				boss.TakeDamage(score);
+				return score;
 			}
+			return 0;
 		}
 		else if (m_pCircleSkillCheck != nullptr)
 		{
@@ -170,15 +177,13 @@ void Fisherman::Catch(Boss& boss)
 			m_pCircleSkillCheck->CheckSucces();
 			if (m_pCircleSkillCheck->CheckSucces() == true)
 			{
-				boss.TakeDamage(m_pCurrFish->GetRarity());
+				boss.TakeDamage(score);
+				return score;
 			}
+			return 0;
 		}
-
-		m_ShowFish = false;
-		delete m_pCurrFish;
-		m_pCurrFish = nullptr;
-		m_State = State::hook;
 	}
+	return 0;
 }
 
 void Fisherman::CastRod()

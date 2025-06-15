@@ -9,9 +9,9 @@ CircleSkillCheck::CircleSkillCheck(const Vector2f& pos, const float arcSize) : m
 m_ArcSize{ arcSize }, m_Angle{ (rand() % 360) * (float)M_PI / 180.f }, m_SpinAngle{ 0.f }, m_IsHidden{ true }, m_FeedbackTimer{ 1.f },
 m_ShowFeedback{ false }, m_pFeedback{ }
 {
-	if (m_Angle >= 2 * M_PI - m_ArcSize)
+	if (m_Angle >= 2 * (float)M_PI - m_ArcSize)
 	{
-		m_Angle -= 2 * M_PI - m_ArcSize;
+		m_Angle -= 2 * (float)M_PI - m_ArcSize;
 	}
 }
 

@@ -20,7 +20,7 @@ public:
 	void Draw(const Vector2f& fishPos) const;
 	void Update(float elapsedSec);
 	void Find(const Vector2f& pos);
-	void Catch(Boss& boss);
+	int Catch(Boss& boss);
 	void CastRod();
 
 private:

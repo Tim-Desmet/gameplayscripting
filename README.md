@@ -4,6 +4,13 @@
 - Story -> Sequence of events
 - Mechanics -> Rules, Goal, Actions
 
+## Controls
+"e"     = Cast rod
+"Space" = Catch
+"i"     = Show info
+"r"     = Restart
+"p"     = Pause
+
 ## Feature ideas
 - Fishing
 - Fish Rarities
