@@ -17,19 +17,25 @@
 - Fish Size
 - Shinies
 - Animation
-- Buy/Sell in Store:
-- Junk Selling
 - Boss slowly comes from right -> each catch does damage depending on rarity, HP/Speed ups per kill
 OR (pvz like) fish shoot at boss
+- Healing -> more HP?
+- Upgrades
+- Bait randomly appears for temp rarer catches -> click to activate
+- Scaling difficulty (with cap)?
 
-Healing
-Upgrades
-Bait -> Rarer catching
+Feedback for player
+- Above boss: [BOSS] BossName
+- Rarity under fish
+- (Cycle through) dialogue box above fisherman: "These darn seamonsters!", "Can't fish in peace!", "Gotta keep throwin' these fish!", "The bigger the fish, the bigger the damage!", "They just keep comin'!", "Gotta fish fast!", "What is this, the Grand Line?"
 
 (Need Skill)
 Catching: 
 - Skill check to catch
-- Battle to catch -> HP, Damage, Speed, Lvl?
-- Choose battle or catch -> battle = exp/reward(s), catch = new fish to use for battle (with skill check?)
 - Boss fight after X catches?
-- Missions/Quests
+- Crit chance -> higher crit chance with catch combos
+Skill Check ideas:
+- Sequence of keys to press
+- Fish moves around, click x times to catch
+- Random yes/no fish questions
+- 

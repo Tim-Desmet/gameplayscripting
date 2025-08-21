@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "RectSkillCheck.h"
 #include "CircleSkillCheck.h"
+#include "KeySkillCheck.h"
 #include "Fish.h"
 #include "Boss.h"
 #include <vector>
@@ -10,7 +11,7 @@
 
 Fisherman::Fisherman(const Vector2f& pos)
 	: m_Pos{ pos }, m_State{ State::idle }, m_CurrFrame{ 0 }, m_Cols{ 4 }, m_AnimTime{ 0.f },
-	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }, m_pCircleSkillCheck{}
+	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }, m_pCircleSkillCheck{}, m_pKeySkillCheck{}
 {
 	InitTextures();
 }
@@ -27,6 +28,8 @@ Fisherman::~Fisherman()
 	m_pSkillCheck = nullptr;
 	delete m_pCircleSkillCheck;
 	m_pCircleSkillCheck = nullptr;
+	delete m_pKeySkillCheck;
+	m_pKeySkillCheck = nullptr;
 	delete m_pCurrFish;
 	m_pCurrFish = nullptr;
 
@@ -74,6 +77,11 @@ void Fisherman::Draw(const Vector2f& fishPos) const
 		m_pSkillCheck->Draw();
 	}
 
+	if (m_pKeySkillCheck != nullptr)
+	{
+		m_pKeySkillCheck->Draw();
+	}
+
 	if (m_ShowFish == true)
 	{
 		m_pCurrFish->Draw(fishPos);
@@ -117,6 +125,12 @@ void Fisherman::Update(float elapsedSec)
 		m_pSkillCheck->Update(elapsedSec);
 	}
 
+	if (m_pKeySkillCheck != nullptr)
+	{
+		m_pKeySkillCheck->Update(elapsedSec);
+		m_pKeySkillCheck->CheckSuccess();
+	}
+
 	if (m_ShowFish == true && m_pCurrFish != nullptr)
 	{
 		m_pCurrFish->Update(elapsedSec);
@@ -125,7 +139,7 @@ void Fisherman::Update(float elapsedSec)
 
 void Fisherman::Find(const Vector2f& pos)
 {
-	const int skillCheckAmount{ 2 };
+	const int skillCheckAmount{ 3 };
 
 	m_State = State::fishing;
 	if (m_ShowFish == false)
@@ -140,12 +154,13 @@ void Fisherman::Find(const Vector2f& pos)
 		if (randSkillNr == 0)
 		{
 			m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, pos.y / 2 }, 100.f / m_pCurrFish->GetRarity());
-			m_pSkillCheck->ToggleVisibility();
 		}
 		else if (randSkillNr == 1)
 		{
 			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , (float)M_PI / (2 * m_pCurrFish->GetRarity())};
-			m_pCircleSkillCheck->ToggleVisibility();
+		}
+		else if (randSkillNr == 2) {
+			m_pKeySkillCheck = new KeySkillCheck{ Vector2f{pos.x / 2 - 200.f, pos.y / 2} };
 		}
 		m_ShowFish = true;
 	}

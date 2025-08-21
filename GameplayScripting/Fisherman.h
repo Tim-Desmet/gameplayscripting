@@ -4,6 +4,7 @@ class Texture;
 class Fish;
 class RectSkillCheck;
 class CircleSkillCheck;
+class KeySkillCheck;
 class Boss;
 class Fisherman 
 {
@@ -34,6 +35,7 @@ private:
 	const Texture* m_pFishTexture;
 	RectSkillCheck* m_pSkillCheck;
 	CircleSkillCheck* m_pCircleSkillCheck;
+	KeySkillCheck* m_pKeySkillCheck;
 	Fish* m_pCurrFish;
 	bool m_ShowFish;
 

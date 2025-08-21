@@ -1,0 +1,34 @@
+#pragma once
+#include "Texture.h"
+#include <vector>
+class KeySkillCheck
+{
+public:
+	KeySkillCheck(const Vector2f& pos);
+	~KeySkillCheck();
+
+	void Draw() const;
+	void Update(float elapsedSec);
+	void ToggleVisibility();
+	bool CheckSuccess();
+
+private:
+	Vector2f m_Position;
+	bool m_IsHidden;
+	int m_CurrKeyIndex;
+
+	static Texture* m_pUpArrowText;
+	static Texture* m_pDownArrowText;
+	static Texture* m_pLeftArrowText;
+	static Texture* m_pRightArrowText;
+	static Texture* m_pUpArrowTextSuccess;
+	static Texture* m_pDownArrowTextSuccess;
+	static Texture* m_pLeftArrowTextSuccess;
+	static Texture* m_pRightArrowTextSuccess;
+
+	std::vector<SDL_KeyCode> m_Keys;
+	std::vector<Texture*> m_KeyTextures;
+
+	std::vector<SDL_KeyCode> GetRandKeys();
+	void LoadTextures();
+};

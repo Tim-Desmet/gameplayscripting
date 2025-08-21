@@ -1,7 +1,7 @@
 #pragma once
 class Texture;
 class Animation;
-class Boss
+class Boss final
 {
 public:
 	enum class State {

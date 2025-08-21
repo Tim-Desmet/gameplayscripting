@@ -4,9 +4,16 @@
 #include <utils.h>
 #include <iostream>
 
-RectSkillCheck::RectSkillCheck(const Vector2f& pos, const float width) : m_Width(width), m_IsHidden(true), m_Speed{ 300.f },
-m_ShowFeedback{ false }, m_IsMoving{ false }, m_BorderRect{ pos.x - 200.f, pos.y, 400.f, 75.f }, m_PlayerRect{ pos.x - 200.f, pos.y, 5.f, 75.f },
-m_pFeedback{ }, m_FeedbackTimer{ 1.f }
+RectSkillCheck::RectSkillCheck(const Vector2f& pos, const float width)
+	: m_Width(width),
+	m_IsHidden( false ),
+	m_Speed{ 300.f },
+	m_ShowFeedback{ false },
+	m_IsMoving{ false },
+	m_BorderRect{ pos.x - 200.f, pos.y, 400.f, 75.f },
+	m_PlayerRect{ pos.x - 200.f, pos.y, 5.f, 75.f },
+	m_pFeedback{ },
+	m_FeedbackTimer{ 1.f }
 {
 	m_Position.x = rand() % (int)(m_BorderRect.width - m_BorderRect.left) + m_BorderRect.left;
 	m_Position.y = pos.y;

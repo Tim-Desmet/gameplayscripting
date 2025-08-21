@@ -5,9 +5,17 @@
 #include <utils.h>
 #include <iostream>
 
-CircleSkillCheck::CircleSkillCheck(const Vector2f& pos, const float arcSize) : m_Position{ pos }, m_Radius{ 80.f }, m_Speed{ 5.f },
-m_ArcSize{ arcSize }, m_Angle{ (rand() % 360) * (float)M_PI / 180.f }, m_SpinAngle{ 0.f }, m_IsHidden{ true }, m_FeedbackTimer{ 1.f },
-m_ShowFeedback{ false }, m_pFeedback{ }
+CircleSkillCheck::CircleSkillCheck(const Vector2f& pos, const float arcSize)
+	: m_Position{ pos },
+	m_Radius{ 80.f },
+	m_Speed{ 5.f },
+	m_ArcSize{ arcSize },
+	m_Angle{ (rand() % 360) * (float)M_PI / 180.f },
+	m_SpinAngle{ 0.f },
+	m_IsHidden{ false },
+	m_FeedbackTimer{ 1.f },
+	m_ShowFeedback{ false },
+	m_pFeedback{ }
 {
 	if (m_Angle >= 2 * (float)M_PI - m_ArcSize)
 	{
