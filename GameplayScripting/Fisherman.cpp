@@ -128,7 +128,6 @@ void Fisherman::Update(float elapsedSec)
 	if (m_pKeySkillCheck != nullptr)
 	{
 		m_pKeySkillCheck->Update(elapsedSec);
-		m_pKeySkillCheck->CheckSuccess();
 	}
 
 	if (m_ShowFish == true && m_pCurrFish != nullptr)
@@ -149,6 +148,8 @@ void Fisherman::Find(const Vector2f& pos)
 		m_pSkillCheck = nullptr;
 		delete m_pCircleSkillCheck;
 		m_pCircleSkillCheck = nullptr;
+		delete m_pKeySkillCheck;
+		m_pKeySkillCheck = nullptr;
 		m_pCurrFish = new Fish();
 		std::cout << m_pCurrFish->GetRarity() << std::endl;
 		if (randSkillNr == 0)
@@ -166,35 +167,61 @@ void Fisherman::Find(const Vector2f& pos)
 	}
 }
 
-int Fisherman::Catch(Boss& boss)
+int Fisherman::Catch(Boss& boss, int inputType)
 {
 	if (m_State == State::fishing)
 	{
 		const int score{ m_pCurrFish->GetRarity() };
-		m_ShowFish = false;
-		delete m_pCurrFish;
-		m_pCurrFish = nullptr;
-		m_State = State::hook;
-		if (m_pSkillCheck != nullptr)
+		switch (inputType)
 		{
-			m_pSkillCheck->Stop();
-			m_pSkillCheck->CheckSucces();
-			if (m_pSkillCheck->CheckSucces() == true)
+		case 0:
+			m_ShowFish = false;
+			delete m_pCurrFish;
+			m_pCurrFish = nullptr;
+			m_State = State::hook;
+			if (m_pSkillCheck != nullptr)
 			{
-				return score + boss.TakeDamage(score);
+				m_pSkillCheck->Stop();
+				m_pSkillCheck->CheckSucces();
+				if (m_pSkillCheck->CheckSucces() == true)
+				{
+					return score + boss.TakeDamage(score);
+				}
+				return 0;
 			}
-			return 0;
-		}
-		else if (m_pCircleSkillCheck != nullptr)
-		{
-			m_pCircleSkillCheck->Stop();
-			m_pCircleSkillCheck->CheckSucces();
-			if (m_pCircleSkillCheck->CheckSucces() == true)
+			else if (m_pCircleSkillCheck != nullptr)
 			{
-				return score + boss.TakeDamage(score);
+				m_pCircleSkillCheck->Stop();
+				m_pCircleSkillCheck->CheckSucces();
+				if (m_pCircleSkillCheck->CheckSucces() == true)
+				{
+					return score + boss.TakeDamage(score);
+				}
+				return 0;
 			}
-			return 0;
+			break;
+		case 1:
+			if (m_pKeySkillCheck != nullptr)
+			{
+				m_pKeySkillCheck->CheckSuccess();
+				if (m_pKeySkillCheck->CheckSuccess() == true)
+				{
+					m_ShowFish = false;
+					delete m_pCurrFish;
+					m_pCurrFish = nullptr;
+					m_State = State::hook;
+					return score + boss.TakeDamage(score);
+				}
+				return -1;
+			}
+			break;
+		case 2:
+			break;
+		default:
+			break;
+
 		}
+		return 0;
 	}
 	return 0;
 }

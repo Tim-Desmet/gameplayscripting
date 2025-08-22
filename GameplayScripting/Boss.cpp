@@ -110,27 +110,27 @@ void Boss::LoadTextures()
 	{
 	case 1:
 		m_Frames = 4;
-		m_Speed = 15;
+		m_Speed = 10;
 		m_HitPoints = 30;
 		break;
 	case 2:
 		m_Frames = 6;
-		m_Speed = 25;
+		m_Speed = 20;
 		m_HitPoints = 20;
 		break;
 	case 3:
 		m_Frames = 4;
-		m_Speed = 30;
+		m_Speed = 25;
 		m_HitPoints = 15;
 		break;
 	case 4:
 		m_Frames = 6;
-		m_Speed = 10;
+		m_Speed = 5;
 		m_HitPoints = 40;
 		break;
 	case 5:
 		m_Frames = 4;
-		m_Speed = 50;
+		m_Speed = 40;
 		m_HitPoints = 10;
 		break;
 	default:

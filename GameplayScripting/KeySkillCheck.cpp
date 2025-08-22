@@ -1,4 +1,4 @@
-#include "KeySkillCheck.h"
+﻿#include "KeySkillCheck.h"
 #include "utils.h"
 
 Texture* KeySkillCheck::m_pUpArrowText = nullptr;
@@ -13,7 +13,10 @@ Texture* KeySkillCheck::m_pRightArrowTextSuccess = nullptr;
 KeySkillCheck::KeySkillCheck(const Vector2f& pos)
 	: m_IsHidden{ false },
 	m_Position{ pos },
-	m_CurrKeyIndex{ 0 }
+	m_CurrKeyIndex{ 0 },
+	m_ShowFeedback{ false },
+	m_FeedbackTimer{ 1.f },
+	m_pFeedback{ }
 {
 	LoadTextures();
 	m_Keys = GetRandKeys();
@@ -37,6 +40,8 @@ KeySkillCheck::~KeySkillCheck()
 	m_pLeftArrowTextSuccess = nullptr;
 	delete m_pRightArrowTextSuccess;
 	m_pRightArrowTextSuccess = nullptr;
+	delete m_pFeedback;
+	m_pFeedback = nullptr;
 }
 
 void KeySkillCheck::Draw() const
@@ -49,7 +54,11 @@ void KeySkillCheck::Draw() const
 
 		for (size_t i = 0; i < m_KeyTextures.size(); i++)
 		{
-			m_KeyTextures[i]->Draw(Vector2f{ m_Position.x + 80.f * i, m_Position.y });
+			m_KeyTextures[i]->Draw(Vector2f{ 50.f + m_Position.x + 125.f * i, m_Position.y });
+		}
+		if (m_ShowFeedback == true)
+		{
+			m_pFeedback->Draw(Vector2f{ m_Position.x, m_Position.y - m_pFeedback->GetHeight() + 175.f });
 		}
 	}
 }
@@ -83,9 +92,17 @@ void KeySkillCheck::Update(float elapsedSec)
 				++m_CurrKeyIndex;
 			}
 		}
+		if (m_ShowFeedback == true)
+		{
+			m_FeedbackTimer -= elapsedSec;
+			if (m_FeedbackTimer <= 0.f)
+			{
+				m_ShowFeedback = false;
+				ToggleVisibility();
+			}
+		}
 	}
 }
-
 
 void KeySkillCheck::ToggleVisibility()
 {
@@ -94,36 +111,68 @@ void KeySkillCheck::ToggleVisibility()
 
 bool KeySkillCheck::CheckSuccess()
 {
-	return m_CurrKeyIndex >= m_Keys.size();
+	const std::string font{ "Font.ttf" };
+	std::string text{ "" };
+
+	if (m_CurrKeyIndex >= m_Keys.size() - 1 == true)
+	{
+		m_ShowFeedback = true;
+		delete m_pFeedback;
+		text = "Nice! You got it!";
+		m_pFeedback = new Texture{ text, font, 50, Color4f{0.f, 1.f, 0.f, 1.f} };
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 std::vector<SDL_KeyCode> KeySkillCheck::GetRandKeys()
 {
-	const int randKeyAmount{ 5 };
+	const int randKeyAmount{ 3 };
 	std::vector<SDL_KeyCode> keys{};
+	keys.reserve(randKeyAmount);
 
 	for (size_t i = 0; i < randKeyAmount; i++)
 	{
-		int randKeyNr = rand() % 4;
-		switch (randKeyNr)
+		int randKeyNr;
+		SDL_KeyCode newKey{};
+
+		do
 		{
-		case 0:
-			keys.push_back(SDLK_UP);
+			randKeyNr = rand() % 4;
+			switch (randKeyNr)
+			{
+			case 0:
+				newKey = SDLK_UP;
+				break;
+			case 1:
+				newKey = SDLK_DOWN;
+				break;
+			case 2:
+				newKey = SDLK_LEFT;
+				break;
+			case 3:
+				newKey = SDLK_RIGHT;
+				break;
+			}
+		} while (!keys.empty() && newKey == keys.back());
+
+		keys.push_back(newKey);
+
+		switch (newKey)
+		{
+		case SDLK_UP:
 			m_KeyTextures.push_back(m_pUpArrowText);
 			break;
-		case 1:
-			keys.push_back(SDLK_DOWN);
+		case SDLK_DOWN:
 			m_KeyTextures.push_back(m_pDownArrowText);
 			break;
-		case 2:
-			keys.push_back(SDLK_LEFT);
+		case SDLK_LEFT:
 			m_KeyTextures.push_back(m_pLeftArrowText);
 			break;
-		case 3:
-			keys.push_back(SDLK_RIGHT);
+		case SDLK_RIGHT:
 			m_KeyTextures.push_back(m_pRightArrowText);
-			break;
-		default:
 			break;
 		}
 	}
@@ -136,13 +185,13 @@ void KeySkillCheck::LoadTextures()
 	const int txtSize{ 50 };
 	const std::string font{ "Font.ttf" };
 	m_pUpArrowText = new Texture("^", font, txtSize, yellow);
-	m_pDownArrowText = new Texture("v", font, txtSize, yellow);
+	m_pDownArrowText = new Texture("V", font, txtSize, yellow);
 	m_pLeftArrowText = new Texture("<", font, txtSize, yellow);
 	m_pRightArrowText = new Texture(">", font, txtSize, yellow);
 
 	const Color4f green{ 0.f, 1.f, 0.f, 0.75f };
 	m_pUpArrowTextSuccess = new Texture("^", font, txtSize, green);
-	m_pDownArrowTextSuccess = new Texture("v", font, txtSize, green);
+	m_pDownArrowTextSuccess = new Texture("V", font, txtSize, green);
 	m_pLeftArrowTextSuccess = new Texture("<", font, txtSize, green);
 	m_pRightArrowTextSuccess = new Texture(">", font, txtSize, green);
 }

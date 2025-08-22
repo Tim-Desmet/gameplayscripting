@@ -117,7 +117,7 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	case SDLK_SPACE:
 		if (m_pBoss != nullptr && m_IsGameOver == false && m_IsPaused == false)
 		{
-			m_Score += 10 * m_pFisherman->Catch(*m_pBoss);
+			m_Score += 10 * m_pFisherman->Catch(*m_pBoss, 0);
 			delete m_pScoreTexture;
 			m_pScoreTexture = new Texture(std::to_string(m_Score), "Font.ttf", 30, Color4f{ 0.f, 0.f, 1.f, 1.f });
 		}
@@ -136,6 +136,21 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 		break;
 	case SDLK_p:
 		m_IsPaused = !m_IsPaused;
+		break;
+	case SDLK_UP:
+	case SDLK_DOWN:
+	case SDLK_RIGHT:
+	case SDLK_LEFT:
+		if (m_pBoss != nullptr && m_IsGameOver == false && m_IsPaused == false)
+		{
+			int newScore{ 10 * m_pFisherman->Catch(*m_pBoss, 1) };
+			if (newScore >= 0)
+			{
+				m_Score += newScore;
+				delete m_pScoreTexture;
+				m_pScoreTexture = new Texture(std::to_string(m_Score), "Font.ttf", 30, Color4f{ 0.f, 0.f, 1.f, 1.f });
+			}
+		}
 		break;
 	default:
 		break;

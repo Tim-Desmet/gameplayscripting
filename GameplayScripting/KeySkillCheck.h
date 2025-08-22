@@ -29,6 +29,10 @@ private:
 	std::vector<SDL_KeyCode> m_Keys;
 	std::vector<Texture*> m_KeyTextures;
 
+	bool m_ShowFeedback;
+	Texture* m_pFeedback;
+	float m_FeedbackTimer;
+
 	std::vector<SDL_KeyCode> GetRandKeys();
 	void LoadTextures();
 };
