@@ -15,14 +15,21 @@ public:
 	float GetHeight() const;
 	void SetRarity(int rar);
 	int GetRarity() const;
+	float GetWeightPercentage() const;
 	int GetWeightedRandomNumber();
 
 private:
-	Texture* m_pTexture;
 	int m_CurrFrame;
 	const int m_NumFrames;
 	float m_AnimTime;
 	const float m_FrameTime;
 	int m_Rarity;
+	int m_Weights[8];
+
+	Color4f m_TxtColor;
+	Texture* m_pTexture;
+	Texture* m_pRarity;
+
+	void LoadTextures();
 };
 
