@@ -1,5 +1,6 @@
 ﻿#include "KeySkillCheck.h"
 #include "utils.h"
+#include <iostream>
 
 Texture* KeySkillCheck::m_pUpArrowText = nullptr;
 Texture* KeySkillCheck::m_pDownArrowText = nullptr;
@@ -10,13 +11,14 @@ Texture* KeySkillCheck::m_pDownArrowTextSuccess = nullptr;
 Texture* KeySkillCheck::m_pLeftArrowTextSuccess = nullptr;
 Texture* KeySkillCheck::m_pRightArrowTextSuccess = nullptr;
 
-KeySkillCheck::KeySkillCheck(const Vector2f& pos)
+KeySkillCheck::KeySkillCheck(const Vector2f& pos, int rarity)
 	: m_IsHidden{ false },
 	m_Position{ pos },
 	m_CurrKeyIndex{ 0 },
 	m_ShowFeedback{ false },
 	m_FeedbackTimer{ 1.f },
-	m_pFeedback{ }
+	m_pFeedback{ },
+	m_Difficuly{ rarity }
 {
 	LoadTextures();
 	m_Keys = GetRandKeys();
@@ -42,10 +44,19 @@ KeySkillCheck::~KeySkillCheck()
 	m_pRightArrowTextSuccess = nullptr;
 	delete m_pFeedback;
 	m_pFeedback = nullptr;
+	delete m_pInfoText;
+	m_pInfoText = nullptr;
 }
 
 void KeySkillCheck::Draw() const
 {
+	const float arrowWidth = m_pDownArrowText->GetWidth();
+	const float spacing = 20.f;
+	const int count = m_KeyTextures.size();
+
+	const float totalWidth = count * arrowWidth + (count - 1) * spacing;
+	const float startX = m_Position.x + 200.f - totalWidth / 2.f;
+
 	if (m_IsHidden == false)
 	{
 		Rectf rect{ m_Position.x, m_Position.y, 400.f, 75.f };
@@ -54,11 +65,14 @@ void KeySkillCheck::Draw() const
 
 		for (size_t i = 0; i < m_KeyTextures.size(); i++)
 		{
-			m_KeyTextures[i]->Draw(Vector2f{ 50.f + m_Position.x + 125.f * i, m_Position.y });
+			m_KeyTextures[i]->Draw(Vector2f{ startX + i * (arrowWidth + spacing), m_Position.y});
 		}
 		if (m_ShowFeedback == true)
 		{
-			m_pFeedback->Draw(Vector2f{ m_Position.x, m_Position.y - m_pFeedback->GetHeight() + 175.f });
+			m_pFeedback->Draw(Vector2f{ m_Position.x + 20.f, m_Position.y - m_pFeedback->GetHeight() + 175.f });
+		}
+		else {
+			m_pInfoText->Draw(Vector2f{ m_Position.x + m_pInfoText->GetWidth() / 4, m_Position.y - m_pInfoText->GetHeight() });
 		}
 	}
 }
@@ -67,31 +81,6 @@ void KeySkillCheck::Update(float elapsedSec)
 {
 	if (m_IsHidden == false)
 	{
-		const Uint8* state = SDL_GetKeyboardState(NULL);
-
-		if (m_CurrKeyIndex < m_Keys.size())
-		{
-			SDL_KeyCode expectedKey = m_Keys[m_CurrKeyIndex];
-
-			if (state[SDL_GetScancodeFromKey(expectedKey)])
-			{
-				switch (expectedKey)
-				{
-				case SDLK_UP:
-					m_KeyTextures[m_CurrKeyIndex] = m_pUpArrowTextSuccess;
-					break;
-				case SDLK_DOWN:
-					m_KeyTextures[m_CurrKeyIndex] = m_pDownArrowTextSuccess;
-					break;
-				case SDLK_LEFT:
-					m_KeyTextures[m_CurrKeyIndex] = m_pLeftArrowTextSuccess;
-					break;
-				case SDLK_RIGHT: m_KeyTextures[m_CurrKeyIndex] = m_pRightArrowTextSuccess;
-					break;
-				}
-				++m_CurrKeyIndex;
-			}
-		}
 		if (m_ShowFeedback == true)
 		{
 			m_FeedbackTimer -= elapsedSec;
@@ -111,10 +100,36 @@ void KeySkillCheck::ToggleVisibility()
 
 bool KeySkillCheck::CheckSuccess()
 {
+
+	const Uint8* state = SDL_GetKeyboardState(NULL);
 	const std::string font{ "Font.ttf" };
 	std::string text{ "" };
 
-	if (m_CurrKeyIndex >= m_Keys.size() - 1 == true)
+	if (m_CurrKeyIndex < m_Keys.size())
+	{
+		SDL_KeyCode expectedKey = m_Keys[m_CurrKeyIndex];
+
+		if (state[SDL_GetScancodeFromKey(expectedKey)])
+		{
+			switch (expectedKey)
+			{
+			case SDLK_UP:
+				m_KeyTextures[m_CurrKeyIndex] = m_pUpArrowTextSuccess;
+				break;
+			case SDLK_DOWN:
+				m_KeyTextures[m_CurrKeyIndex] = m_pDownArrowTextSuccess;
+				break;
+			case SDLK_LEFT:
+				m_KeyTextures[m_CurrKeyIndex] = m_pLeftArrowTextSuccess;
+				break;
+			case SDLK_RIGHT: m_KeyTextures[m_CurrKeyIndex] = m_pRightArrowTextSuccess;
+				break;
+			}
+			++m_CurrKeyIndex;
+		}
+	}
+
+	if (m_CurrKeyIndex >= m_Keys.size())
 	{
 		m_ShowFeedback = true;
 		delete m_pFeedback;
@@ -129,7 +144,7 @@ bool KeySkillCheck::CheckSuccess()
 
 std::vector<SDL_KeyCode> KeySkillCheck::GetRandKeys()
 {
-	const int randKeyAmount{ 3 };
+	const int randKeyAmount{ m_Difficuly };
 	std::vector<SDL_KeyCode> keys{};
 	keys.reserve(randKeyAmount);
 
@@ -182,16 +197,21 @@ std::vector<SDL_KeyCode> KeySkillCheck::GetRandKeys()
 void KeySkillCheck::LoadTextures()
 {
 	const Color4f yellow{ 1.f, 1.f, 0.f, 0.75f };
-	const int txtSize{ 50 };
+	const int txtSize{ 60 };
+	const std::string arrowFont{ "FiraCode.ttf" };
 	const std::string font{ "Font.ttf" };
-	m_pUpArrowText = new Texture("^", font, txtSize, yellow);
-	m_pDownArrowText = new Texture("V", font, txtSize, yellow);
-	m_pLeftArrowText = new Texture("<", font, txtSize, yellow);
-	m_pRightArrowText = new Texture(">", font, txtSize, yellow);
+	m_pUpArrowText = new Texture(u8"↑", arrowFont, txtSize, yellow);
+	m_pDownArrowText = new Texture(u8"↓", arrowFont, txtSize, yellow);
+	m_pLeftArrowText = new Texture(u8"←", arrowFont, txtSize, yellow);
+	m_pRightArrowText = new Texture(u8"→", arrowFont, txtSize, yellow);
 
 	const Color4f green{ 0.f, 1.f, 0.f, 0.75f };
-	m_pUpArrowTextSuccess = new Texture("^", font, txtSize, green);
-	m_pDownArrowTextSuccess = new Texture("V", font, txtSize, green);
-	m_pLeftArrowTextSuccess = new Texture("<", font, txtSize, green);
-	m_pRightArrowTextSuccess = new Texture(">", font, txtSize, green);
+	m_pUpArrowTextSuccess = new Texture(u8"↑", arrowFont, txtSize, green);
+	m_pDownArrowTextSuccess = new Texture(u8"↓", arrowFont, txtSize, green);
+	m_pLeftArrowTextSuccess = new Texture(u8"←", arrowFont, txtSize, green);
+	m_pRightArrowTextSuccess = new Texture(u8"→", arrowFont, txtSize, green);
+
+	std::cout << u8"↓";
+
+	m_pInfoText = new Texture("Use the arrow keys!", font, txtSize / 2, yellow);
 }

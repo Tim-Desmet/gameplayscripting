@@ -4,7 +4,7 @@
 class KeySkillCheck
 {
 public:
-	KeySkillCheck(const Vector2f& pos);
+	KeySkillCheck(const Vector2f& pos, int rarity);
 	~KeySkillCheck();
 
 	void Draw() const;
@@ -16,6 +16,7 @@ private:
 	Vector2f m_Position;
 	bool m_IsHidden;
 	int m_CurrKeyIndex;
+	int m_Difficuly;
 
 	static Texture* m_pUpArrowText;
 	static Texture* m_pDownArrowText;
@@ -32,6 +33,8 @@ private:
 	bool m_ShowFeedback;
 	Texture* m_pFeedback;
 	float m_FeedbackTimer;
+
+	Texture* m_pInfoText;
 
 	std::vector<SDL_KeyCode> GetRandKeys();
 	void LoadTextures();

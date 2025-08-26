@@ -18,6 +18,7 @@ Game::~Game( )
 
 void Game::Initialize( )
 {
+	SetConsoleOutputCP(CP_UTF8);
 	m_Score = 0;
 	m_ShowInfo = false;
 	m_IsGameOver = false;

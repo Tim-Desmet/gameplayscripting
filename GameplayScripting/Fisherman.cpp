@@ -161,7 +161,7 @@ void Fisherman::Find(const Vector2f& pos)
 			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , (float)M_PI / (2 * m_pCurrFish->GetRarity())};
 		}
 		else if (randSkillNr == 2) {
-			m_pKeySkillCheck = new KeySkillCheck{ Vector2f{pos.x / 2 - 200.f, pos.y / 2} };
+			m_pKeySkillCheck = new KeySkillCheck{ Vector2f{pos.x / 2 - 200.f, pos.y / 2}, m_pCurrFish->GetRarity() };
 		}
 		m_ShowFish = true;
 	}
@@ -175,12 +175,12 @@ int Fisherman::Catch(Boss& boss, int inputType)
 		switch (inputType)
 		{
 		case 0:
-			m_ShowFish = false;
-			delete m_pCurrFish;
-			m_pCurrFish = nullptr;
-			m_State = State::hook;
 			if (m_pSkillCheck != nullptr)
 			{
+				m_ShowFish = false;
+				delete m_pCurrFish;
+				m_pCurrFish = nullptr;
+				m_State = State::hook;
 				m_pSkillCheck->Stop();
 				m_pSkillCheck->CheckSucces();
 				if (m_pSkillCheck->CheckSucces() == true)
@@ -191,6 +191,10 @@ int Fisherman::Catch(Boss& boss, int inputType)
 			}
 			else if (m_pCircleSkillCheck != nullptr)
 			{
+				m_ShowFish = false;
+				delete m_pCurrFish;
+				m_pCurrFish = nullptr;
+				m_State = State::hook;
 				m_pCircleSkillCheck->Stop();
 				m_pCircleSkillCheck->CheckSucces();
 				if (m_pCircleSkillCheck->CheckSucces() == true)
@@ -203,8 +207,7 @@ int Fisherman::Catch(Boss& boss, int inputType)
 		case 1:
 			if (m_pKeySkillCheck != nullptr)
 			{
-				m_pKeySkillCheck->CheckSuccess();
-				if (m_pKeySkillCheck->CheckSuccess() == true)
+				if (m_pKeySkillCheck->CheckSuccess())
 				{
 					m_ShowFish = false;
 					delete m_pCurrFish;
