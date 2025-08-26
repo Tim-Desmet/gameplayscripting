@@ -34,6 +34,8 @@ private:
 	Animation* m_pHurtAnimation;
 	Texture* m_pDamageTexture;
 
+	Texture* m_pName;
+
 	void LoadTextures();
 	int GetRandBoss();
 	float GetWidth() const;

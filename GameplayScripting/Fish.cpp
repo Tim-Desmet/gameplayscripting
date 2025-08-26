@@ -25,7 +25,7 @@ void Fish::Draw(const Vector2f& pos) const
 	Rectf srcRect = Rectf{ m_CurrFrame * width, 0.f, width, height };
 	glPushMatrix();
     glTranslatef(pos.x, pos.y, 0.f);
-    m_pRarity->Draw(Vector2f{ -width / 2 - m_pRarity->GetWidth() / 2, -m_pRarity->GetHeight()});
+    m_pRarity->Draw(Vector2f{ -width - m_pRarity->GetWidth() / 2, -m_pRarity->GetHeight()});
     glScalef(3.f, 3.f, 1.f);
     m_pTexture->Draw(Vector2f{ -width / 2, 0.f }, srcRect);
 	glPopMatrix();

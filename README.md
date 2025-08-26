@@ -27,7 +27,7 @@ OR (pvz like) fish shoot at boss
 Feedback for player
 - Above boss: [BOSS] BossName
 - Rarity under fish
-- (Cycle through) dialogue box above fisherman: "These darn seamonsters!", "Can't fish in peace!", "Gotta keep throwin' these fish!", "The bigger the fish, the bigger the damage!", "They just keep comin'!", "Gotta fish fast!", "What is this, the Grand Line?"
+- (Cycle through) dialogue box above fisherman: "These darn seamonsters!", "Can't fish in peace!", "Gotta keep throwin' these fish!", "The bigger the fish, the bigger the damage!", "They just keep comin'!", "Gotta fish fast!", "What is this, the Grand Line?", "Rare fish are tough to catch!"
 
 (Need Skill)
 Catching: 

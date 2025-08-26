@@ -22,6 +22,8 @@ Boss::~Boss()
 	m_pHurtAnimation = nullptr;
 	delete m_pDamageTexture;
 	m_pDamageTexture = nullptr;
+	delete m_pName;
+	m_pName = nullptr;
 }
 
 void Boss::Draw() const
@@ -46,6 +48,7 @@ void Boss::Draw() const
 	utils::SetColor(Color4f{ 0.f, 1.f, 0.f, 0.75f });
 	utils::FillRect(m_HPBar);
 	m_pDamageTexture->Draw(Vector2f{ m_HPBar.left + GetWidth() / 2, m_HPBar.bottom + 10.f });
+	m_pName->Draw(Vector2f{ m_Position.x, m_HPBar.bottom - 25.f });
 }
 
 void Boss::Update(float elapsedSec)
@@ -100,40 +103,47 @@ void Boss::Die()
 	delete m_pWalkAnimation;
 	delete m_pHurtTexture;
 	delete m_pHurtAnimation;
+	delete m_pName;
 	LoadTextures();
 	m_Position.x = m_InitPos;
 }
 
 void Boss::LoadTextures()
 {
+	const std::string font{"Font.ttf"};
+	const int txtSize{ 25 };
+	const Color4f clr{ 1.f, 0.f, 0.f, 1.f };
 	switch (m_BossNr)
 	{
 	case 1:
 		m_Frames = 4;
 		m_Speed = 10;
 		m_HitPoints = 30;
+		m_pName = new Texture("[BOSS]Anglerfish", font, txtSize, clr);
 		break;
 	case 2:
 		m_Frames = 6;
 		m_Speed = 20;
 		m_HitPoints = 20;
+		m_pName = new Texture("[BOSS]Eel", font, txtSize, clr);
 		break;
 	case 3:
 		m_Frames = 4;
 		m_Speed = 25;
 		m_HitPoints = 15;
+		m_pName = new Texture("[BOSS]Jellyfish", font, txtSize, clr);
 		break;
 	case 4:
 		m_Frames = 6;
 		m_Speed = 5;
 		m_HitPoints = 40;
+		m_pName = new Texture("[BOSS]Octopus", font, txtSize, clr);
 		break;
 	case 5:
 		m_Frames = 4;
 		m_Speed = 40;
 		m_HitPoints = 10;
-		break;
-	default:
+		m_pName = new Texture("[BOSS]Shark", font, txtSize, clr);
 		break;
 	}
 	m_pWalkTexture = new Texture{ "Bosses/" + std::to_string(m_BossNr) + "/Walk.png" };
