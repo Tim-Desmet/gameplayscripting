@@ -127,31 +127,31 @@ void Boss::LoadTextures()
 	{
 	case 1:
 		m_Frames = 4;
-		m_Speed = 10;
-		m_HitPoints = 30;
+		m_Speed = 15;
+		m_HitPoints = 35;
 		m_pName = new Texture("[BOSS]Anglerfish", font, txtSize, clr);
 		break;
 	case 2:
 		m_Frames = 6;
-		m_Speed = 16;
-		m_HitPoints = 20;
+		m_Speed = 20;
+		m_HitPoints = 25;
 		m_pName = new Texture("[BOSS]Eel", font, txtSize, clr);
 		break;
 	case 3:
 		m_Frames = 4;
 		m_Speed = 20;
-		m_HitPoints = 15;
+		m_HitPoints = 20;
 		m_pName = new Texture("[BOSS]Jellyfish", font, txtSize, clr);
 		break;
 	case 4:
 		m_Frames = 6;
 		m_Speed = 5;
-		m_HitPoints = 40;
+		m_HitPoints = 50;
 		m_pName = new Texture("[BOSS]Octopus", font, txtSize, clr);
 		break;
 	case 5:
 		m_Frames = 4;
-		m_Speed = 30;
+		m_Speed = 35;
 		m_HitPoints = 10;
 		m_pName = new Texture("[BOSS]Shark", font, txtSize, clr);
 		break;

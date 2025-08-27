@@ -40,6 +40,7 @@ private:
 	bool m_IsGameOver;
 	bool m_IsPaused;
 	int m_Score;
+
 	Texture* m_pWaterTexture;
 	Texture* m_pFishingHutTexture;
 	Texture* m_pInfoTexture;

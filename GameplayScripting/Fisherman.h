@@ -23,7 +23,7 @@ public:
 	void Update(float elapsedSec);
 	void Find(const Vector2f& pos);
 	int Catch(Boss& boss, int inputType);
-	void CastRod();
+	float GetSkillCheckTimer();
 
 private:
 	Vector2f m_Pos;
@@ -32,6 +32,7 @@ private:
 	int m_Cols;
 	float m_AnimTime;
 	float m_DialogueTimer;
+	float m_SkillCheckTimer;
 
 	const Texture* m_pIdleTexture;
 	const Texture* m_pHookTexture;

@@ -3,7 +3,6 @@
 #include "SkillCheck.h"
 #include "Texture.h"
 #include <utils.h>
-#include <iostream>
 
 CircleSkillCheck::CircleSkillCheck(const Vector2f& pos, const float arcSize)
 	: m_Position{ pos },

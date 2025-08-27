@@ -141,7 +141,7 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	switch (e.keysym.sym)
 	{
 	case SDLK_e:
-		if (m_IsGameOver == false && m_IsPaused == false)
+		if (m_IsGameOver == false && m_IsPaused == false && m_pFisherman->GetSkillCheckTimer() <= 0.f)
 		{
 			m_pFisherman->Find(Vector2f(GetViewPort().width, GetViewPort().height));
 			m_pReelSound->Play(false);

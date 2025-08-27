@@ -8,11 +8,11 @@
 #include "Boss.h"
 #include "SoundEffect.h"
 #include <vector>
-#include <iostream>
 
 Fisherman::Fisherman(const Vector2f& pos)
 	: m_Pos{ pos }, m_State{ State::idle }, m_CurrFrame{ 0 }, m_Cols{ 4 }, m_AnimTime{ 0.f },
-	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }, m_pCircleSkillCheck{}, m_pKeySkillCheck{}, m_DialogueTimer{ 5.f }
+	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }, m_pCircleSkillCheck{}, m_pKeySkillCheck{}, m_DialogueTimer{ 5.f },
+	m_SkillCheckTimer{ 0.f }
 {
 	InitTextures();
 }
@@ -138,16 +138,19 @@ void Fisherman::Update(float elapsedSec)
 	if (m_pCircleSkillCheck != nullptr)
 	{
 		m_pCircleSkillCheck->Update(elapsedSec);
+		m_SkillCheckTimer -= elapsedSec;
 	}
 
 	if (m_pSkillCheck != nullptr)
 	{
 		m_pSkillCheck->Update(elapsedSec);
+		m_SkillCheckTimer -= elapsedSec;
 	}
 
 	if (m_pKeySkillCheck != nullptr)
 	{
 		m_pKeySkillCheck->Update(elapsedSec);
+		m_SkillCheckTimer -= elapsedSec;
 	}
 
 	if (m_ShowFish == true && m_pCurrFish != nullptr)
@@ -161,29 +164,31 @@ void Fisherman::Find(const Vector2f& pos)
 	const int skillCheckAmount{ 3 };
 
 	m_State = State::fishing;
-	if (m_ShowFish == false)
+	if (m_SkillCheckTimer <= 0.f)
 	{
-		int randSkillNr = rand() % skillCheckAmount;
-		delete m_pSkillCheck;
-		m_pSkillCheck = nullptr;
-		delete m_pCircleSkillCheck;
-		m_pCircleSkillCheck = nullptr;
-		delete m_pKeySkillCheck;
-		m_pKeySkillCheck = nullptr;
-		m_pCurrFish = new Fish();
-		std::cout << m_pCurrFish->GetRarity() << std::endl;
-		if (randSkillNr == 0)
+		if (m_ShowFish == false)
 		{
-			m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, pos.y / 4 }, 100.f / m_pCurrFish->GetRarity());
+			int randSkillNr = rand() % skillCheckAmount;
+			delete m_pSkillCheck;
+			m_pSkillCheck = nullptr;
+			delete m_pCircleSkillCheck;
+			m_pCircleSkillCheck = nullptr;
+			delete m_pKeySkillCheck;
+			m_pKeySkillCheck = nullptr;
+			m_pCurrFish = new Fish();
+			if (randSkillNr == 0)
+			{
+				m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, pos.y / 4 }, 100.f / m_pCurrFish->GetRarity());
+			}
+			else if (randSkillNr == 1)
+			{
+				m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 3} , (float)M_PI / (2 * m_pCurrFish->GetRarity()) };
+			}
+			else if (randSkillNr == 2) {
+				m_pKeySkillCheck = new KeySkillCheck{ Vector2f{pos.x / 2 - 200.f, pos.y / 4}, m_pCurrFish->GetRarity() };
+			}
+			m_ShowFish = true;
 		}
-		else if (randSkillNr == 1)
-		{
-			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 3} , (float)M_PI / (2 * m_pCurrFish->GetRarity()) };
-		}
-		else if (randSkillNr == 2) {
-			m_pKeySkillCheck = new KeySkillCheck{ Vector2f{pos.x / 2 - 200.f, pos.y / 4}, m_pCurrFish->GetRarity() };
-		}
-		m_ShowFish = true;
 	}
 }
 
@@ -210,6 +215,7 @@ int Fisherman::Catch(Boss& boss, int inputType)
 				}
 				else {
 					m_pFail->Play(false);
+					m_SkillCheckTimer = 1.f;
 					return 0;
 				}
 			}
@@ -228,6 +234,7 @@ int Fisherman::Catch(Boss& boss, int inputType)
 				}
 				else {
 					m_pFail->Play(false);
+					m_SkillCheckTimer = 1.f;
 					return 0;
 				}
 			}
@@ -251,9 +258,11 @@ int Fisherman::Catch(Boss& boss, int inputType)
 					delete m_pCurrFish;
 					m_pCurrFish = nullptr;
 					m_State = State::hook;
+					m_SkillCheckTimer = 1.f;
 					return 0;
 				}
 				else {
+					m_SkillCheckTimer = 1.f;
 					return -1;
 				}
 			}
@@ -269,9 +278,9 @@ int Fisherman::Catch(Boss& boss, int inputType)
 	return 0;
 }
 
-void Fisherman::CastRod()
+float Fisherman::GetSkillCheckTimer()
 {
-
+	return m_SkillCheckTimer;
 }
 
 void Fisherman::InitTextures()

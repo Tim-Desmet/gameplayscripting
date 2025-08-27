@@ -2,7 +2,6 @@
 #include "RectSkillCheck.h"
 #include "Texture.h"
 #include <utils.h>
-#include <iostream>
 
 RectSkillCheck::RectSkillCheck(const Vector2f& pos, const float width)
 	: m_Width(width),
