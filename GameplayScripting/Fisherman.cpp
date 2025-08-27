@@ -11,7 +11,7 @@
 
 Fisherman::Fisherman(const Vector2f& pos)
 	: m_Pos{ pos }, m_State{ State::idle }, m_CurrFrame{ 0 }, m_Cols{ 4 }, m_AnimTime{ 0.f },
-	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }, m_pCircleSkillCheck{}, m_pKeySkillCheck{}
+	m_pSkillCheck{}, m_pCurrFish{}, m_ShowFish{ false }, m_pCircleSkillCheck{}, m_pKeySkillCheck{}, m_DialogueTimer{ 5.f }
 {
 	InitTextures();
 }
@@ -32,7 +32,8 @@ Fisherman::~Fisherman()
 	m_pKeySkillCheck = nullptr;
 	delete m_pCurrFish;
 	m_pCurrFish = nullptr;
-
+	delete m_pDialogueTexture;
+	m_pDialogueTexture = nullptr;
 }
 
 void Fisherman::Draw(const Vector2f& fishPos) const
@@ -82,6 +83,11 @@ void Fisherman::Draw(const Vector2f& fishPos) const
 		m_pKeySkillCheck->Draw();
 	}
 
+	if (m_pDialogueTexture != nullptr)
+	{
+		m_pDialogueTexture->Draw(Vector2f{ m_Pos.x - m_pDialogueTexture->GetWidth() / 2, m_Pos.y + 75.f});
+	}
+
 	if (m_ShowFish == true)
 	{
 		m_pCurrFish->Draw(fishPos);
@@ -90,13 +96,15 @@ void Fisherman::Draw(const Vector2f& fishPos) const
 
 void Fisherman::Update(float elapsedSec)
 {
-	const float m_FrameDuration{ 0.3f };
+	const float frameDuration{ 0.3f };
+	const float dialogueTime{ 10.f };
 
 	m_AnimTime += elapsedSec;
+	m_DialogueTimer -= elapsedSec;
 
-	if (m_AnimTime >= m_FrameDuration)
+	if (m_AnimTime >= frameDuration)
 	{
-		m_AnimTime -= m_FrameDuration;
+		m_AnimTime -= frameDuration;
 
 		if (m_State == State::hook)
 		{
@@ -113,6 +121,13 @@ void Fisherman::Update(float elapsedSec)
 		{
 			m_CurrFrame = (m_CurrFrame + 1) % m_Cols;
 		}
+	}
+
+	if (m_DialogueTimer <= 0.f)
+	{
+		m_DialogueTimer = dialogueTime;
+		delete m_pDialogueTexture;
+		m_pDialogueTexture = new Texture(GetDialogue(), "Font.ttf", 15, Color4f{ 0.8f, 0.45f, 0.f, 1.f });
 	}
 
 	if (m_pCircleSkillCheck != nullptr)
@@ -239,4 +254,41 @@ void Fisherman::InitTextures()
 	m_pIdleTexture = new Texture("Fisherman/Fisherman_idle.png");
 	m_pHookTexture = new Texture("Fisherman/Fisherman_hook.png");
 	m_pFishTexture = new Texture("Fisherman/Fisherman_fish.png");
+	m_pDialogueTexture = new Texture("What a nice day to go fishin`!", "Font.ttf", 15, Color4f{0.8f, 0.45f, 0.f, 1.f});
+}
+
+std::string Fisherman::GetDialogue() const
+{
+	const int dialogues{ 8 };
+	int randNr{ rand() % (dialogues) };
+
+	switch (randNr)
+	{
+	case 0:
+		return "These darn seamonsters!";
+		break;
+	case 1:
+		return "Can't fish in peace!!";
+		break;
+	case 2:
+		return "Gotta keep feedin` them fish!";
+		break;
+	case 3:
+		return "The bigger the fish, the better the fish.";
+		break;
+	case 4:
+		return "They just keep comin`!";
+		break;
+	case 5:
+		return "Gotta fish fast!";
+		break;
+	case 6:
+		return "Rare fish are a tough catch!";
+		break;
+	case 7:
+		return "*sigh*";
+		break;
+	default:
+		break;
+	}
 }

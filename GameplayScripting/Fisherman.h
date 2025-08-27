@@ -30,9 +30,13 @@ private:
 	int m_CurrFrame;
 	int m_Cols;
 	float m_AnimTime;
+	float m_DialogueTimer;
+
 	const Texture* m_pIdleTexture;
 	const Texture* m_pHookTexture;
 	const Texture* m_pFishTexture;
+	Texture* m_pDialogueTexture;
+
 	RectSkillCheck* m_pSkillCheck;
 	CircleSkillCheck* m_pCircleSkillCheck;
 	KeySkillCheck* m_pKeySkillCheck;
@@ -40,5 +44,6 @@ private:
 	bool m_ShowFish;
 
 	void InitTextures();
+	std::string GetDialogue() const;
 };
 

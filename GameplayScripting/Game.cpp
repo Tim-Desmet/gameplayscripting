@@ -20,16 +20,16 @@ void Game::Initialize( )
 {
 	SetConsoleOutputCP(CP_UTF8);
 	m_Score = 0;
-	m_ShowInfo = false;
+	m_ShowInfo = true;
 	m_IsGameOver = false;
 	m_IsPaused = false;
-	std::string info{ "Controls: E = Cast rod, SPACEBAR = Attempt skillcheck" };
+	std::string info{ "Controls: 'E' = Cast rod, 'SPACEBAR' = Attempt skillcheck (press 'i' to hide info)" };
 	std::string gameOver{ "Game Over X(" };
 	std::string restart{ "Press r to restart" };
 
 	m_pWaterTexture = new Texture{"Objects/ocean.png"};
 	m_pFishingHutTexture = new Texture{"Objects/Fishing_hut.png"};
-	m_pInfoTexture = new Texture(info, "Font.ttf", 20, Color4f{ 1.f, 1.f, 0.f, 1.f });
+	m_pInfoTexture = new Texture(info, "Font.ttf", 15, Color4f{ 1.f, 1.f, 0.f, 1.f });
 	m_pGameOverTexture = new Texture(gameOver, "Font.ttf", 80, Color4f{ 1.f, 0.f, 0.f, 1.f });
 	m_pRestartTexture = new Texture(restart, "Font.ttf", 30, Color4f{ 1.f, 0.f, 0.f, 1.f });
 	m_pScoreTexture = new Texture(std::to_string(m_Score), "Font.ttf", 30, Color4f{ 0.f, 0.f, 1.f, 1.f });
