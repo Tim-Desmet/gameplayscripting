@@ -19,7 +19,8 @@ KeySkillCheck::KeySkillCheck(const Vector2f& pos, int rarity)
 	m_ShowFeedback{ false },
 	m_FeedbackTimer{ 1.f },
 	m_pFeedback{ },
-	m_Difficuly{ rarity }
+	m_Difficuly{ rarity },
+	m_FullyFailed{ false }
 {
 	LoadTextures();
 	m_Keys = GetRandKeys();
@@ -49,6 +50,8 @@ KeySkillCheck::~KeySkillCheck()
 	m_pInfoText = nullptr;
 	delete m_pInputSound;
 	m_pInputSound = nullptr;
+	delete m_pFail;
+	m_pFail = nullptr;
 }
 
 void KeySkillCheck::Draw() const
@@ -114,6 +117,7 @@ bool KeySkillCheck::CheckSuccess()
 
 		if (state[SDL_GetScancodeFromKey(expectedKey)])
 		{
+			m_FullyFailed = false;
 			switch (expectedKey)
 			{
 			case SDLK_UP:
@@ -134,10 +138,20 @@ bool KeySkillCheck::CheckSuccess()
 			}
 			++m_CurrKeyIndex;
 		}
+		else {
+			m_ShowFeedback = true;
+			delete m_pFeedback;
+			text = "Snap! It got away...";
+			m_pFeedback = new Texture{ text, font, 50, Color4f{1.f, 0.f, 0.f, 1.f} };
+			m_pFail->Play(false);
+			m_FullyFailed = true;
+			return false;
+		}
 	}
 
 	if (m_CurrKeyIndex >= m_Keys.size())
 	{
+		m_FullyFailed = false;
 		m_ShowFeedback = true;
 		delete m_pFeedback;
 		text = "Nice! You got it!";
@@ -145,13 +159,20 @@ bool KeySkillCheck::CheckSuccess()
 		return true;
 	}
 	else {
+		m_FullyFailed = false;
 		return false;
 	}
+	
+}
+
+bool KeySkillCheck::IsFullyFailed()
+{
+	return m_FullyFailed;
 }
 
 std::vector<SDL_KeyCode> KeySkillCheck::GetRandKeys()
 {
-	const int randKeyAmount{ m_Difficuly / 2 + 1 };
+	const int randKeyAmount{ 2 };
 	std::vector<SDL_KeyCode> keys{};
 	keys.reserve(randKeyAmount);
 
@@ -223,4 +244,6 @@ void KeySkillCheck::LoadTextures()
 	m_pInfoText = new Texture("Use the arrow keys!", font, txtSize / 3, yellow);
 	m_pInputSound = new SoundEffect("Sound/input.wav");
 	m_pInputSound->SetVolume(25);
+	m_pFail = new SoundEffect("Sound/fail.mp3");
+	m_pFail->SetVolume(25);
 }

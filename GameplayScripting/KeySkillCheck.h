@@ -12,12 +12,14 @@ public:
 	void Update(float elapsedSec);
 	void ToggleVisibility();
 	bool CheckSuccess();
+	bool IsFullyFailed();
 
 private:
 	Vector2f m_Position;
 	bool m_IsHidden;
 	int m_CurrKeyIndex;
 	int m_Difficuly;
+	bool m_FullyFailed;
 
 	static Texture* m_pUpArrowText;
 	static Texture* m_pDownArrowText;
@@ -37,6 +39,7 @@ private:
 
 	Texture* m_pInfoText;
 	SoundEffect* m_pInputSound;
+	SoundEffect* m_pFail;
 
 	std::vector<SDL_KeyCode> GetRandKeys();
 	void LoadTextures();

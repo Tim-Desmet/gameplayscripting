@@ -235,7 +235,8 @@ int Fisherman::Catch(Boss& boss, int inputType)
 		case 1:
 			if (m_pKeySkillCheck != nullptr)
 			{
-				if (m_pKeySkillCheck->CheckSuccess())
+				bool isSucces = m_pKeySkillCheck->CheckSuccess();
+				if (isSucces == true)
 				{
 					m_ShowFish = false;
 					delete m_pCurrFish;
@@ -244,7 +245,17 @@ int Fisherman::Catch(Boss& boss, int inputType)
 					m_pSuccess->Play(false);
 					return score + boss.TakeDamage(score);
 				}
-				return -1;
+				else if (isSucces == false && m_pKeySkillCheck->IsFullyFailed() == true)
+				{
+					m_ShowFish = false;
+					delete m_pCurrFish;
+					m_pCurrFish = nullptr;
+					m_State = State::hook;
+					return 0;
+				}
+				else {
+					return -1;
+				}
 			}
 			break;
 		case 2:
