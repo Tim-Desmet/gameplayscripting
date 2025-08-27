@@ -2,6 +2,7 @@
 #include "Boss.h"
 #include "Texture.h"
 #include "Animation.h"
+#include "SoundEffect.h"
 #include "utils.h"
 
 Boss::Boss(const Vector2f& pos) : m_InitPos{ pos.x }, m_Position{ pos }, m_HitPoints{ 50 }, m_Speed{ 10.f }, m_BossNr{ GetRandBoss() },
@@ -26,6 +27,8 @@ Boss::~Boss()
 	m_pName = nullptr;
 	delete m_pHitPoints;
 	m_pHitPoints = nullptr;
+	delete m_pDeathSound;
+	m_pDeathSound = nullptr;
 }
 
 void Boss::Draw() const
@@ -112,6 +115,7 @@ void Boss::Die()
 	delete m_pHitPoints;
 	LoadTextures();
 	m_Position.x = m_InitPos;
+	m_pDeathSound->Play(false);
 }
 
 void Boss::LoadTextures()
@@ -159,6 +163,8 @@ void Boss::LoadTextures()
 	m_pHurtAnimation->SetLooping(false);
 	m_pDamageTexture = new Texture(" ", "Font.ttf", 30, Color4f{1.f, 0.f, 0.f, 1.f});
 	m_pHitPoints = new Texture(std::to_string(m_HitPoints), "Font.ttf", 15, Color4f(1.f, 0.f, 0.f, 1.f));
+	m_pDeathSound = new SoundEffect("Sound/monster_death.mp3");
+	m_pDeathSound->SetVolume(50);
 }
 
 int Boss::GetRandBoss()

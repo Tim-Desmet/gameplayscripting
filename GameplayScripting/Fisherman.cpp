@@ -6,6 +6,7 @@
 #include "KeySkillCheck.h"
 #include "Fish.h"
 #include "Boss.h"
+#include "SoundEffect.h"
 #include <vector>
 #include <iostream>
 
@@ -34,6 +35,10 @@ Fisherman::~Fisherman()
 	m_pCurrFish = nullptr;
 	delete m_pDialogueTexture;
 	m_pDialogueTexture = nullptr;
+	delete m_pSuccess;
+	m_pSuccess = nullptr;
+	delete m_pFail;
+	m_pFail = nullptr;
 }
 
 void Fisherman::Draw(const Vector2f& fishPos) const
@@ -200,9 +205,13 @@ int Fisherman::Catch(Boss& boss, int inputType)
 				m_pSkillCheck->CheckSucces();
 				if (m_pSkillCheck->CheckSucces() == true)
 				{
+					m_pSuccess->Play(false);
 					return score + boss.TakeDamage(score);
 				}
-				return 0;
+				else {
+					m_pFail->Play(false);
+					return 0;
+				}
 			}
 			else if (m_pCircleSkillCheck != nullptr)
 			{
@@ -214,9 +223,13 @@ int Fisherman::Catch(Boss& boss, int inputType)
 				m_pCircleSkillCheck->CheckSucces();
 				if (m_pCircleSkillCheck->CheckSucces() == true)
 				{
+					m_pSuccess->Play(false);
 					return score + boss.TakeDamage(score);
 				}
-				return 0;
+				else {
+					m_pFail->Play(false);
+					return 0;
+				}
 			}
 			break;
 		case 1:
@@ -228,6 +241,7 @@ int Fisherman::Catch(Boss& boss, int inputType)
 					delete m_pCurrFish;
 					m_pCurrFish = nullptr;
 					m_State = State::hook;
+					m_pSuccess->Play(false);
 					return score + boss.TakeDamage(score);
 				}
 				return -1;
@@ -255,6 +269,10 @@ void Fisherman::InitTextures()
 	m_pHookTexture = new Texture("Fisherman/Fisherman_hook.png");
 	m_pFishTexture = new Texture("Fisherman/Fisherman_fish.png");
 	m_pDialogueTexture = new Texture("What a nice day to go fishin`!", "Font.ttf", 15, Color4f{0.8f, 0.45f, 0.f, 1.f});
+	m_pSuccess = new SoundEffect("Sound/success.wav");
+	m_pSuccess->SetVolume(25);
+	m_pFail = new SoundEffect("Sound/fail.mp3");
+	m_pFail->SetVolume(25);
 }
 
 std::string Fisherman::GetDialogue() const

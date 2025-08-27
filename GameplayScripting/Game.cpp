@@ -3,6 +3,8 @@
 #include "Texture.h"
 #include "Fisherman.h"
 #include "Boss.h"
+#include "SoundEffect.h"
+#include "SoundStream.h"
 #include <utils.h>
 
 Game::Game( const Window& window ) 
@@ -23,7 +25,7 @@ void Game::Initialize( )
 	m_ShowInfo = true;
 	m_IsGameOver = false;
 	m_IsPaused = false;
-	std::string info{ "Controls: 'E' = Cast rod, 'SPACEBAR' = Attempt skillcheck (press 'i' to hide info)" };
+	std::string info{ "Controls: 'E' = Cast rod, 'SPACEBAR' = Attempt skillcheck, 'P' = Pause ('I' to hide info)" };
 	std::string gameOver{ "Game Over X(" };
 	std::string restart{ "Press r to restart" };
 
@@ -37,8 +39,16 @@ void Game::Initialize( )
 
 	const Vector2f fisherPosisher{ 135.f, GetViewPort().height / 2 + 10.f };
 	m_pFisherman = new Fisherman(fisherPosisher);
-	const Vector2f bossStartPos{ GetViewPort().width - 20.f, GetViewPort().height / 3 };
+	const Vector2f bossStartPos{ GetViewPort().width - 50.f, GetViewPort().height / 3 };
 	m_pBoss = new Boss(bossStartPos);
+
+	m_pMusic = new SoundStream("Sound/fish_music.mp3");
+	m_pMusic->SetVolume(20);
+	m_pMusic->Play(true);
+	m_pReelSound = new SoundEffect("Sound/reel.mp3");
+	m_pReelSound->SetVolume(20);
+	m_pGameOverSound = new SoundEffect("Sound/game_over.mp3");
+	m_pGameOverSound->SetVolume(25);
 }
 
 void Game::Cleanup( )
@@ -61,6 +71,12 @@ void Game::Cleanup( )
 	m_pScoreTexture = nullptr;
 	delete m_pAddedScoreTexture;
 	m_pAddedScoreTexture = nullptr;
+	delete m_pMusic;
+	m_pMusic = nullptr;
+	delete m_pReelSound;
+	m_pReelSound = nullptr;
+	delete m_pGameOverSound;
+	m_pGameOverSound = nullptr;
 }
 
 void Game::Update( float elapsedSec )
@@ -106,7 +122,15 @@ void Game::Draw( ) const
 	{
 		m_pGameOverTexture->Draw(Vector2f{ GetViewPort().width / 2 - m_pGameOverTexture->GetWidth() / 2, GetViewPort().height / 2 });
 		m_pRestartTexture->Draw(Vector2f{ GetViewPort().width / 2 - m_pRestartTexture->GetWidth() / 2, GetViewPort().height / 2 - 20.f });
-		Rectf gameOverBlur{ GetViewPort().left + 5.f, GetViewPort().bottom + 5.f, GetViewPort().width - 10.f, GetViewPort().height - 10.f };
+		Rectf gameOverBlur{ GetViewPort().left, GetViewPort().bottom, GetViewPort().width, GetViewPort().height };
+		utils::SetColor(Color4f{ 0.f, 0.f, 0.f, 0.5f });
+		utils::FillRect(gameOverBlur);
+	}
+	if (m_IsPaused == true)
+	{
+		Texture pauseText{ "Paused", "Font.ttf", 50, Color4f{1.f, 0.f, 0.f, 1.f} };
+		pauseText.Draw(Vector2f{GetViewPort().width / 2 - pauseText.GetWidth() / 2, GetViewPort().height / 2});
+		Rectf gameOverBlur{ GetViewPort().left, GetViewPort().bottom, GetViewPort().width, GetViewPort().height };
 		utils::SetColor(Color4f{ 0.f, 0.f, 0.f, 0.5f });
 		utils::FillRect(gameOverBlur);
 	}
@@ -120,6 +144,7 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 		if (m_IsGameOver == false && m_IsPaused == false)
 		{
 			m_pFisherman->Find(Vector2f(GetViewPort().width, GetViewPort().height));
+			m_pReelSound->Play(false);
 		}
 		break;
 	case SDLK_SPACE:
@@ -139,6 +164,7 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	case SDLK_r:
 		if (m_IsGameOver == true)
 		{
+			m_pMusic->Play(true);
 			m_Score = 0;
 			m_IsGameOver = false;
 			const Vector2f bossStartPos{ GetViewPort().width - 20.f, GetViewPort().height / 3 };
@@ -234,6 +260,8 @@ void Game::ClearBackground( ) const
 
 void Game::GameOver()
 {
+	m_pGameOverSound->Play(false);
+	m_pMusic->Stop();
 	m_IsGameOver = true;
 	delete m_pBoss;
 	m_pBoss = nullptr;

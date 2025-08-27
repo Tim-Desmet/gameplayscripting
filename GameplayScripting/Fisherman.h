@@ -6,6 +6,7 @@ class RectSkillCheck;
 class CircleSkillCheck;
 class KeySkillCheck;
 class Boss;
+class SoundEffect;
 class Fisherman 
 {
 public:
@@ -42,6 +43,9 @@ private:
 	KeySkillCheck* m_pKeySkillCheck;
 	Fish* m_pCurrFish;
 	bool m_ShowFish;
+
+	SoundEffect* m_pSuccess;
+	SoundEffect* m_pFail;
 
 	void InitTextures();
 	std::string GetDialogue() const;

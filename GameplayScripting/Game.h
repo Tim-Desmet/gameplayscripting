@@ -4,6 +4,8 @@
 class Texture;
 class Fisherman;
 class Boss;
+class SoundEffect;
+class SoundStream;
 class Game : public BaseGame
 {
 public:
@@ -47,4 +49,8 @@ private:
 	Texture* m_pAddedScoreTexture;
 	Fisherman* m_pFisherman;
 	Boss* m_pBoss;
+
+	SoundStream* m_pMusic;
+	SoundEffect* m_pReelSound;
+	SoundEffect* m_pGameOverSound;
 };

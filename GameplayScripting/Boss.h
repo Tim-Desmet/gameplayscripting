@@ -1,6 +1,7 @@
 #pragma once
 class Texture;
 class Animation;
+class SoundEffect;
 class Boss final
 {
 public:
@@ -36,6 +37,8 @@ private:
 
 	Texture* m_pName;
 	Texture* m_pHitPoints;
+
+	SoundEffect* m_pDeathSound;
 
 	void LoadTextures();
 	int GetRandBoss();
