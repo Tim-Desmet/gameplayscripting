@@ -10,6 +10,7 @@
 "i"     = Show info
 "r"     = Restart
 "p"     = Pause
+"arrow keys" => skillcheck #3
 
 ## Feature ideas
 - Fishing
@@ -35,7 +36,7 @@ Catching:
 - Boss fight after X catches?
 - Crit chance -> higher crit chance with catch combos
 Skill Check ideas:
-- Sequence of keys to press
+- Sequence of keys to press V
 - Fish moves around, click x times to catch
 - Random yes/no fish questions
 - 

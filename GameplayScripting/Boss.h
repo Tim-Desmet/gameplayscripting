@@ -35,6 +35,7 @@ private:
 	Texture* m_pDamageTexture;
 
 	Texture* m_pName;
+	Texture* m_pHitPoints;
 
 	void LoadTextures();
 	int GetRandBoss();

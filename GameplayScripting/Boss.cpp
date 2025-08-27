@@ -24,6 +24,8 @@ Boss::~Boss()
 	m_pDamageTexture = nullptr;
 	delete m_pName;
 	m_pName = nullptr;
+	delete m_pHitPoints;
+	m_pHitPoints = nullptr;
 }
 
 void Boss::Draw() const
@@ -49,6 +51,7 @@ void Boss::Draw() const
 	utils::FillRect(m_HPBar);
 	m_pDamageTexture->Draw(Vector2f{ m_HPBar.left + GetWidth() / 2, m_HPBar.bottom + 10.f });
 	m_pName->Draw(Vector2f{ m_Position.x, m_HPBar.bottom - 25.f });
+	m_pHitPoints->Draw(Vector2f{m_HPBar.left + m_HPBar.width / 2, m_HPBar.bottom});
 }
 
 void Boss::Update(float elapsedSec)
@@ -86,10 +89,11 @@ int Boss::TakeDamage(int damage)
 	m_State = State::hurt;
 	m_HitPoints -= damage;
 	delete m_pDamageTexture;
+	delete m_pHitPoints;
 	m_pDamageTexture = new Texture("-" + std::to_string(damage), "Font.ttf", 30, Color4f{1.f, 0.f, 0.f, 1.f});
+	m_pHitPoints = new Texture(std::to_string(m_HitPoints), "Font.ttf", 15, Color4f(1.f, 0.f, 0.f, 1.f));
 	if (m_HitPoints <= 0)
 	{
-		delete m_pDamageTexture;
 		Die();
 		return 10;
 	}
@@ -104,6 +108,8 @@ void Boss::Die()
 	delete m_pHurtTexture;
 	delete m_pHurtAnimation;
 	delete m_pName;
+	delete m_pDamageTexture;
+	delete m_pHitPoints;
 	LoadTextures();
 	m_Position.x = m_InitPos;
 }
@@ -152,6 +158,7 @@ void Boss::LoadTextures()
 	m_pHurtAnimation = new Animation{ m_pHurtTexture, 2, 0.2f };
 	m_pHurtAnimation->SetLooping(false);
 	m_pDamageTexture = new Texture(" ", "Font.ttf", 30, Color4f{1.f, 0.f, 0.f, 1.f});
+	m_pHitPoints = new Texture(std::to_string(m_HitPoints), "Font.ttf", 15, Color4f(1.f, 0.f, 0.f, 1.f));
 }
 
 int Boss::GetRandBoss()
