@@ -44,6 +44,7 @@ private:
 	Texture* m_pGameOverTexture;
 	Texture* m_pRestartTexture;
 	Texture* m_pScoreTexture;
+	Texture* m_pAddedScoreTexture;
 	Fisherman* m_pFisherman;
 	Boss* m_pBoss;
 };

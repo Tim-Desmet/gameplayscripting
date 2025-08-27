@@ -33,6 +33,7 @@ void Game::Initialize( )
 	m_pGameOverTexture = new Texture(gameOver, "Font.ttf", 80, Color4f{ 1.f, 0.f, 0.f, 1.f });
 	m_pRestartTexture = new Texture(restart, "Font.ttf", 30, Color4f{ 1.f, 0.f, 0.f, 1.f });
 	m_pScoreTexture = new Texture(std::to_string(m_Score), "Font.ttf", 30, Color4f{ 0.f, 0.f, 1.f, 1.f });
+	m_pAddedScoreTexture = nullptr;
 
 	const Vector2f fisherPosisher{ 135.f, GetViewPort().height / 2 + 10.f };
 	m_pFisherman = new Fisherman(fisherPosisher);
@@ -58,6 +59,8 @@ void Game::Cleanup( )
 	m_pRestartTexture = nullptr;
 	delete m_pScoreTexture;
 	m_pScoreTexture = nullptr;
+	delete m_pAddedScoreTexture;
+	m_pAddedScoreTexture = nullptr;
 }
 
 void Game::Update( float elapsedSec )
@@ -85,8 +88,12 @@ void Game::Draw( ) const
 	m_pWaterTexture->Draw();
 	glPopMatrix();
 	m_pFishingHutTexture->Draw(Vector2f{ -30.f, GetViewPort().height / 2 }, Rectf{ 0.f, 0.f, m_pFishingHutTexture->GetWidth(), 2 * m_pFishingHutTexture->GetHeight() / 3 - 8.f });
-	m_pFisherman->Draw(Vector2f(GetViewPort().width / 2, 3 * GetViewPort().height / 4));
+	m_pFisherman->Draw(Vector2f(GetViewPort().width / 2, 30.f));
 	m_pScoreTexture->Draw(Vector2f{ GetViewPort().width - m_pScoreTexture->GetWidth() - 10.f, GetViewPort().height - m_pScoreTexture->GetHeight() - 10.f});
+	if (m_pAddedScoreTexture != nullptr)
+	{
+		m_pAddedScoreTexture->Draw(Vector2f{ GetViewPort().width - m_pScoreTexture->GetWidth() - 10.f, GetViewPort().height - m_pScoreTexture->GetHeight() - m_pAddedScoreTexture->GetHeight() - 10.f});
+	}
 	if (m_pBoss != nullptr)
 	{
 		m_pBoss->Draw();
@@ -118,9 +125,12 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	case SDLK_SPACE:
 		if (m_pBoss != nullptr && m_IsGameOver == false && m_IsPaused == false)
 		{
-			m_Score += 10 * m_pFisherman->Catch(*m_pBoss, 0);
+			int addedScore = 10 * m_pFisherman->Catch(*m_pBoss, 0);
+			m_Score += addedScore;
 			delete m_pScoreTexture;
+			delete m_pAddedScoreTexture;
 			m_pScoreTexture = new Texture(std::to_string(m_Score), "Font.ttf", 30, Color4f{ 0.f, 0.f, 1.f, 1.f });
+			m_pAddedScoreTexture = new Texture("+" + std::to_string(addedScore), "Font.ttf", 25, Color4f{0.f, 0.f, 1.f, 0.5f});
 		}
 		break;
 	case SDLK_i:

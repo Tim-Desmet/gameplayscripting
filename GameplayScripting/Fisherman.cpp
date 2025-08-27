@@ -154,14 +154,14 @@ void Fisherman::Find(const Vector2f& pos)
 		std::cout << m_pCurrFish->GetRarity() << std::endl;
 		if (randSkillNr == 0)
 		{
-			m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, pos.y / 2 }, 100.f / m_pCurrFish->GetRarity());
+			m_pSkillCheck = new RectSkillCheck(Vector2f{ pos.x / 2, pos.y / 4 }, 100.f / m_pCurrFish->GetRarity());
 		}
 		else if (randSkillNr == 1)
 		{
-			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 2} , (float)M_PI / (2 * m_pCurrFish->GetRarity())};
+			m_pCircleSkillCheck = new CircleSkillCheck{ Vector2f{pos.x / 2, pos.y / 3} , (float)M_PI / (2 * m_pCurrFish->GetRarity()) };
 		}
 		else if (randSkillNr == 2) {
-			m_pKeySkillCheck = new KeySkillCheck{ Vector2f{pos.x / 2 - 200.f, pos.y / 2}, m_pCurrFish->GetRarity() };
+			m_pKeySkillCheck = new KeySkillCheck{ Vector2f{pos.x / 2 - 200.f, pos.y / 4}, m_pCurrFish->GetRarity() };
 		}
 		m_ShowFish = true;
 	}

@@ -51,7 +51,7 @@ KeySkillCheck::~KeySkillCheck()
 void KeySkillCheck::Draw() const
 {
 	const float arrowWidth = m_pDownArrowText->GetWidth();
-	const float spacing = 20.f;
+	const float spacing = 30.f;
 	const int count = m_KeyTextures.size();
 
 	const float totalWidth = count * arrowWidth + (count - 1) * spacing;
@@ -69,10 +69,10 @@ void KeySkillCheck::Draw() const
 		}
 		if (m_ShowFeedback == true)
 		{
-			m_pFeedback->Draw(Vector2f{ m_Position.x + 20.f, m_Position.y - m_pFeedback->GetHeight() + 175.f });
+			m_pFeedback->Draw(Vector2f{ m_Position.x + 20.f, m_Position.y - m_pFeedback->GetHeight() + 250.f });
 		}
 		else {
-			m_pInfoText->Draw(Vector2f{ m_Position.x + m_pInfoText->GetWidth() / 4, m_Position.y - m_pInfoText->GetHeight() });
+			m_pInfoText->Draw(Vector2f{ m_Position.x + m_pInfoText->GetWidth() / 2, m_Position.y - m_pInfoText->GetHeight() });
 		}
 	}
 }
@@ -144,7 +144,7 @@ bool KeySkillCheck::CheckSuccess()
 
 std::vector<SDL_KeyCode> KeySkillCheck::GetRandKeys()
 {
-	const int randKeyAmount{ m_Difficuly };
+	const int randKeyAmount{ m_Difficuly / 2 + 1 };
 	std::vector<SDL_KeyCode> keys{};
 	keys.reserve(randKeyAmount);
 
@@ -213,5 +213,5 @@ void KeySkillCheck::LoadTextures()
 
 	std::cout << u8"↓";
 
-	m_pInfoText = new Texture("Use the arrow keys!", font, txtSize / 2, yellow);
+	m_pInfoText = new Texture("Use the arrow keys!", font, txtSize / 3, yellow);
 }

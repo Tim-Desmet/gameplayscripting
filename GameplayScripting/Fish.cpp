@@ -25,7 +25,7 @@ void Fish::Draw(const Vector2f& pos) const
 	Rectf srcRect = Rectf{ m_CurrFrame * width, 0.f, width, height };
 	glPushMatrix();
     glTranslatef(pos.x, pos.y, 0.f);
-    m_pRarity->Draw(Vector2f{ -width - m_pRarity->GetWidth() / 2, -m_pRarity->GetHeight()});
+    m_pRarity->Draw(Vector2f{ -width / 2 - m_pRarity->GetWidth() / 2, -m_pRarity->GetHeight()});
     glScalef(3.f, 3.f, 1.f);
     m_pTexture->Draw(Vector2f{ -width / 2, 0.f }, srcRect);
 	glPopMatrix();
@@ -106,11 +106,11 @@ void Fish::LoadTextures()
     switch (m_Rarity)
     {
     case 1:
-        m_TxtColor = Color4f{ 0.5f, 0.5f, 0.5f, 1.f };
+        m_TxtColor = Color4f{ 0.75f, 0.75f, 0.75f, 1.f };
         m_pRarity = new Texture{ "Very Common " + ss.str() + "%", font, 15, m_TxtColor};
         break;
     case 2:
-        m_TxtColor = Color4f{ 0.38f, 0.55f, 0.70f, 1.f };
+        m_TxtColor = Color4f{ 0.68f, 0.75f, 0.90f, 1.f };
         m_pRarity = new Texture{ "Common " + ss.str() + "%", font, 15, m_TxtColor };
         break;
     case 3:
