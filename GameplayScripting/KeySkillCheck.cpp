@@ -172,7 +172,7 @@ bool KeySkillCheck::IsFullyFailed()
 
 std::vector<SDL_KeyCode> KeySkillCheck::GetRandKeys()
 {
-	const int randKeyAmount{ 2 };
+	const int randKeyAmount{ m_Difficuly / 2 + 1 };
 	std::vector<SDL_KeyCode> keys{};
 	keys.reserve(randKeyAmount);
 
