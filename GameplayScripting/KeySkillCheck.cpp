@@ -1,5 +1,6 @@
 ﻿#include "KeySkillCheck.h"
 #include "utils.h"
+#include "SoundEffect.h"
 #include <iostream>
 
 Texture* KeySkillCheck::m_pUpArrowText = nullptr;
@@ -46,6 +47,8 @@ KeySkillCheck::~KeySkillCheck()
 	m_pFeedback = nullptr;
 	delete m_pInfoText;
 	m_pInfoText = nullptr;
+	delete m_pInputSound;
+	m_pInputSound = nullptr;
 }
 
 void KeySkillCheck::Draw() const
@@ -115,14 +118,18 @@ bool KeySkillCheck::CheckSuccess()
 			{
 			case SDLK_UP:
 				m_KeyTextures[m_CurrKeyIndex] = m_pUpArrowTextSuccess;
+				m_pInputSound->Play(false);
 				break;
 			case SDLK_DOWN:
 				m_KeyTextures[m_CurrKeyIndex] = m_pDownArrowTextSuccess;
+				m_pInputSound->Play(false);
 				break;
 			case SDLK_LEFT:
 				m_KeyTextures[m_CurrKeyIndex] = m_pLeftArrowTextSuccess;
+				m_pInputSound->Play(false);
 				break;
 			case SDLK_RIGHT: m_KeyTextures[m_CurrKeyIndex] = m_pRightArrowTextSuccess;
+				m_pInputSound->Play(false);
 				break;
 			}
 			++m_CurrKeyIndex;
@@ -214,4 +221,6 @@ void KeySkillCheck::LoadTextures()
 	std::cout << u8"↓";
 
 	m_pInfoText = new Texture("Use the arrow keys!", font, txtSize / 3, yellow);
+	m_pInputSound = new SoundEffect("Sound/input.wav");
+	m_pInputSound->SetVolume(25);
 }

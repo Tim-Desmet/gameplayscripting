@@ -1,6 +1,7 @@
 #pragma once
 #include "Texture.h"
 #include <vector>
+class SoundEffect;
 class KeySkillCheck
 {
 public:
@@ -35,6 +36,7 @@ private:
 	float m_FeedbackTimer;
 
 	Texture* m_pInfoText;
+	SoundEffect* m_pInputSound;
 
 	std::vector<SDL_KeyCode> GetRandKeys();
 	void LoadTextures();

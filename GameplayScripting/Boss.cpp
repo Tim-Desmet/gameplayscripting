@@ -164,7 +164,7 @@ void Boss::LoadTextures()
 	m_pDamageTexture = new Texture(" ", "Font.ttf", 30, Color4f{1.f, 0.f, 0.f, 1.f});
 	m_pHitPoints = new Texture(std::to_string(m_HitPoints), "Font.ttf", 15, Color4f(1.f, 0.f, 0.f, 1.f));
 	m_pDeathSound = new SoundEffect("Sound/monster_death.mp3");
-	m_pDeathSound->SetVolume(50);
+	m_pDeathSound->SetVolume(200);
 }
 
 int Boss::GetRandBoss()
