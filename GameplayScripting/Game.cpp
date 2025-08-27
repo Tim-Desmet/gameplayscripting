@@ -178,6 +178,10 @@ void Game::ProcessKeyDownEvent( const SDL_KeyboardEvent & e )
 	case SDLK_DOWN:
 	case SDLK_RIGHT:
 	case SDLK_LEFT:
+	case SDLK_w:
+	case SDLK_a:
+	case SDLK_s:
+	case SDLK_d:
 		if (m_pBoss != nullptr && m_IsGameOver == false && m_IsPaused == false)
 		{
 			int newScore{ 10 * m_pFisherman->Catch(*m_pBoss, 1) };

@@ -262,7 +262,6 @@ int Fisherman::Catch(Boss& boss, int inputType)
 					return 0;
 				}
 				else {
-					m_SkillCheckTimer = 1.f;
 					return -1;
 				}
 			}

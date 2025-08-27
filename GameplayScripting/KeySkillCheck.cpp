@@ -78,7 +78,7 @@ void KeySkillCheck::Draw() const
 			m_pFeedback->Draw(Vector2f{ m_Position.x + 20.f, m_Position.y - m_pFeedback->GetHeight() + 250.f });
 		}
 		else {
-			m_pInfoText->Draw(Vector2f{ m_Position.x + m_pInfoText->GetWidth() / 2, m_Position.y - m_pInfoText->GetHeight() });
+			m_pInfoText->Draw(Vector2f{ m_Position.x + m_pInfoText->GetWidth() / 4, m_Position.y - m_pInfoText->GetHeight() });
 		}
 	}
 }
@@ -106,7 +106,6 @@ void KeySkillCheck::ToggleVisibility()
 
 bool KeySkillCheck::CheckSuccess()
 {
-
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 	const std::string font{ "Font.ttf" };
 	std::string text{ "" };
@@ -114,31 +113,50 @@ bool KeySkillCheck::CheckSuccess()
 	if (m_CurrKeyIndex < m_Keys.size())
 	{
 		SDL_KeyCode expectedKey = m_Keys[m_CurrKeyIndex];
+		bool correctPressed = false;
 
-		if (state[SDL_GetScancodeFromKey(expectedKey)])
+		switch (expectedKey)
 		{
-			m_FullyFailed = false;
-			switch (expectedKey)
+		case SDLK_UP:
+			if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_W])
 			{
-			case SDLK_UP:
 				m_KeyTextures[m_CurrKeyIndex] = m_pUpArrowTextSuccess;
-				m_pInputSound->Play(false);
-				break;
-			case SDLK_DOWN:
-				m_KeyTextures[m_CurrKeyIndex] = m_pDownArrowTextSuccess;
-				m_pInputSound->Play(false);
-				break;
-			case SDLK_LEFT:
-				m_KeyTextures[m_CurrKeyIndex] = m_pLeftArrowTextSuccess;
-				m_pInputSound->Play(false);
-				break;
-			case SDLK_RIGHT: m_KeyTextures[m_CurrKeyIndex] = m_pRightArrowTextSuccess;
-				m_pInputSound->Play(false);
-				break;
+				correctPressed = true;
 			}
+			break;
+
+		case SDLK_DOWN:
+			if (state[SDL_SCANCODE_DOWN] || state[SDL_SCANCODE_S])
+			{
+				m_KeyTextures[m_CurrKeyIndex] = m_pDownArrowTextSuccess;
+				correctPressed = true;
+			}
+			break;
+
+		case SDLK_LEFT:
+			if (state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_A])
+			{
+				m_KeyTextures[m_CurrKeyIndex] = m_pLeftArrowTextSuccess;
+				correctPressed = true;
+			}
+			break;
+
+		case SDLK_RIGHT:
+			if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_D])
+			{
+				m_KeyTextures[m_CurrKeyIndex] = m_pRightArrowTextSuccess;
+				correctPressed = true;
+			}
+			break;
+		}
+
+		if (correctPressed)
+		{
+			m_pInputSound->Play(false);
 			++m_CurrKeyIndex;
 		}
-		else {
+		else
+		{
 			m_ShowFeedback = true;
 			delete m_pFeedback;
 			text = "Snap! It got away...";
@@ -162,8 +180,8 @@ bool KeySkillCheck::CheckSuccess()
 		m_FullyFailed = false;
 		return false;
 	}
-	
 }
+
 
 bool KeySkillCheck::IsFullyFailed()
 {
@@ -241,7 +259,7 @@ void KeySkillCheck::LoadTextures()
 
 	std::cout << u8"↓";
 
-	m_pInfoText = new Texture("Use the arrow keys!", font, txtSize / 3, yellow);
+	m_pInfoText = new Texture("Use the arrow keys or WASD!", font, txtSize / 3, yellow);
 	m_pInputSound = new SoundEffect("Sound/input.wav");
 	m_pInputSound->SetVolume(25);
 	m_pFail = new SoundEffect("Sound/fail.mp3");
